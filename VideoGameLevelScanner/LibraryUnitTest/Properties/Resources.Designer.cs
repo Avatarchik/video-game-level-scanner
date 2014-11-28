@@ -63,6 +63,16 @@ namespace LibraryUnitTest.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ColumnRowSums {
+            get {
+                object obj = ResourceManager.GetObject("ColumnRowSums", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Combine1 {
             get {
                 object obj = ResourceManager.GetObject("Combine1", resourceCulture);
@@ -136,6 +146,16 @@ namespace LibraryUnitTest.Properties {
         internal static System.Drawing.Bitmap Combineresult {
             get {
                 object obj = ResourceManager.GetObject("Combineresult", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ElevenSquares {
+            get {
+                object obj = ResourceManager.GetObject("ElevenSquares", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
