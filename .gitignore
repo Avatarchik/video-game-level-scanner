@@ -37,7 +37,7 @@ dlldata.c
 *_p.c
 *_i.h
 *.ilk
-*.meta
+#*.meta
 *.obj
 *.pch
 *.pdb
@@ -226,6 +226,7 @@ ModelManifest.xml
 # =============== #
 /VideoGameLevelScanner/WallsBuilder/Temp/
 /VideoGameLevelScanner/WallsBuilder/Library/
+/VideoGameLevelScanner/WallsBuilder/Obj/
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
