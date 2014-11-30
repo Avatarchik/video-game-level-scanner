@@ -50,8 +50,131 @@ namespace ImageRecognitionLibrary
         }
         #endregion
         #region Squares detection
-        //public DetectionData DetectSquares(MCvMat src, Constants::ColorModelConstant imgType, string detectionWindow = "");
-        //public DetectionData DetectSquares(MCvMat src, Constants::ColorModelConstant imgType, string detectionWindow = "");
+        public static DetectionData DetectSquares(Image<Gray, byte> src, string detectionWindow = "")
+        {
+            //src = src.PyrDown().PyrUp();
+            src = src.Erode(1);
+
+            Gray cannyThreshold = new Gray(255);
+            Gray cannyThresholdLinking = new Gray(180);
+
+            Image<Gray, Byte> cannyEdges = src.Canny(cannyThreshold.Intensity,cannyThresholdLinking.Intensity,3);
+            LineSegment2D[] lines = cannyEdges.HoughLinesBinary(
+                    1, //Distance resolution in pixel-related units
+                    Math.PI / 45.0, //Angle resolution measured in radians.
+                    20, //threshold
+                    30, //min Line width
+                    10 //gap between lines
+                    )[0]; //Get the lines from the first channel
+
+            List<Rectangle> rectanglesList = new List<Rectangle>();
+
+            using (var storage = new MemStorage())
+            {
+                for (Contour<Point> contours = cannyEdges.FindContours(); contours != null; contours = contours.HNext)
+                {
+                    Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.05, storage);
+ 
+                    if (contours.Area > 50) //only consider contours with area greater than 250
+                    {
+                        if (currentContour.Total >= 4) //The contour has 4 vertices.
+                        {
+                        bool isRectangle = true;
+                        Point[] pts = currentContour.ToArray();
+                        LineSegment2D[] edges = PointCollection.PolyLine(pts, true);
+ 
+                        //for (int i = 0; i < edges.Length; i++)
+                        //{
+                        //    double angle = Math.Abs(
+                        //        edges[(i + 1) % edges.Length].GetExteriorAngleDegree(edges[i]));
+                        //    if (angle < 60 || angle > 120)
+                        //    {
+                        //        isRectangle = false;
+                        //        break;
+                        //    }
+                        //}
+
+                        if (isRectangle) 
+                            rectanglesList.Add(currentContour.BoundingRectangle);
+                        }
+                    }
+                }
+            }
+            ShowInNamedWindow(cannyEdges, detectionWindow);
+            return new DetectionData(rectanglesList, src);         
+        }
+        #endregion
+        #region Helping methods for finding the Board size
+
+        public static Tuple<int[], int[]> CalculateSums(Image<Gray, byte> image)
+        {
+            int width = image.Width;
+            int height = image.Height;
+            int[] blackPixelCols = new int[width];
+            int[] blackPixelRows = new int[height];
+
+            for (int i = 0; i < height; i++)
+            {
+                for (int j = 0; j < width; j++)
+                {
+                    if ((int)(image[i, j].Intensity) > 0)
+                    {
+                        blackPixelCols[j]++;
+                        blackPixelRows[i]++;
+                    }
+                }
+            }
+            return new Tuple<int[], int[]>(blackPixelCols, blackPixelRows);
+        }
+
+        public static List<Point> ColorRanges(int[] blacks, int size)
+        {
+            List<Point> ranges = new List<Point>();
+            Point detectedRange = FindRange(blacks, 0, size);
+            while (detectedRange.X != -1 && detectedRange.Y != -1)
+            {
+                ranges.Add(detectedRange);
+                detectedRange = FindRange(blacks, detectedRange.Y + 1, size);
+            }
+            return ranges;
+        }
+
+        public static Point FindRange(int[] mat, int start, int size)
+        {
+            int a = FindColorIndex(mat, start, size);
+            int b = FindBlackIndex(mat, a + 1, size) - 1;
+            if (a >= 0)
+                if (b >= 0)
+                    return new Point(a, b);
+                else
+                    return new Point(a, size - 1);
+            else
+                return new Point(-1, -1);
+        }
+
+        public static int FindColorIndex(int[] mat, int start, int size)
+        {
+            while (start < size)
+            {
+                if (mat[start] > 0)
+                    return start;
+                else
+                    start++;
+            }
+            return -1;
+        }
+
+        public static int FindBlackIndex(int[] mat, int start, int size)
+        {
+            while (start < size)
+            {
+                if (mat[start] == 0)
+                    return start;
+                else
+                    start++;
+            }
+            return -1;
+        }
         #endregion
         #region Combining images
         public static Image<Bgr, byte> CombineMaps(IEnumerable<Tuple<Image<Gray, byte>, Bgr>> maps)
@@ -75,6 +198,18 @@ namespace ImageRecognitionLibrary
                 result = result | image;
             }
             return result;
+        }
+        #endregion
+        #region Colors
+        public static class Colors
+        {
+            public static Bgr Blue = new Bgr(255, 0, 0);
+            public static Bgr Red = new Bgr(0, 0, 255);
+            public static Bgr Green = new Bgr(0, 255, 0);
+            public static Bgr Yellow = new Bgr(0, 255, 255);
+
+            public static Bgr White = new Bgr(255, 255, 255);
+            public static Bgr Black = new Bgr(0, 0, 0);
         }
         #endregion
     }

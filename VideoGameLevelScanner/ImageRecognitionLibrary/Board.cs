@@ -15,14 +15,14 @@ namespace ImageRecognitionLibrary
         private int[] grid;
 
         #region Constructors and destructor
-        public Board(Point dimentions)
+        public Board(Size size)
         {
-            if (dimentions.X < 1)
-                throw new ArgumentException("Wrong size of the board. One of the dimentions is less than one.", "X=" + dimentions.X);
-            if (dimentions.Y < 1)
-                throw new ArgumentException("Wrong size of the board. One of the dimentions is less than one.", "Y=" + dimentions.Y);
-            height = dimentions.X;
-            width = dimentions.Y;
+            if (size.Height < 1)
+                throw new ArgumentException("Wrong size of the board. One of the dimentions is less than one.", "X=" + size.Height);
+            if (size.Width < 1)
+                throw new ArgumentException("Wrong size of the board. One of the dimentions is less than one.", "Y=" + size.Width);
+            height = size.Height;
+            width = size.Width;
             grid = new int[height * width];
         }
         public Board(int x, int y)

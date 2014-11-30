@@ -35,7 +35,6 @@ namespace LibraryTestingProgram
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         private void StaticImageButton_Click(object sender, RoutedEventArgs e)
@@ -43,35 +42,138 @@ namespace LibraryTestingProgram
             string[] args = Environment.GetCommandLineArgs();
             Image<Hsv,byte> img = new Image<Hsv,byte>(args[1]);
 
-            Image<Gray, byte> blue = ImageTools.FilterColor(img, new Hsv(90,90,50),new Hsv(120,255,255), "Blue Debug Window");
-            Image<Gray, byte> green= ImageTools.FilterColor(img, new Hsv(35, 70, 35), new Hsv(90, 255, 255), "Green Debug Window");
-            Image<Gray, byte> yellow = ImageTools.FilterColor(img, new Hsv(10,70,127), new Hsv(35,255,255), "Yellow Debug Window");
-            Image<Gray, byte> red = ImageTools.FilterColor(
-                img, 
-                new Tuple<Hsv,Hsv>[]{
-                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
-                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
-                }, 
-                "Red Debug Window"
-                );
-
+            var dd = img.Convert<Bgr,byte>();
+            var di = Filter(dd,true);
+            ImageTools.ShowInNamedWindow(img.Convert<Bgr,byte>(), "Original");
         }
 
         private void CameraButton_Click(object sender, RoutedEventArgs e)
         {
-            capture = new Capture(); //create a camera captue
-            timer = new DispatcherTimer();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 25);
-            timer.Start();
+            string[] args = Environment.GetCommandLineArgs();
+            Image<Hsv, byte> img = new Image<Hsv, byte>(args[1]);
+
+            var dd = img.Convert<Bgr, byte>();
+            var di = DetectionImage(dd,true);
+            ImageTools.ShowInNamedWindow(di, "Detection");
+            ImageTools.ShowInNamedWindow(img.Convert<Bgr, byte>(), "Original");
+            //capture = new Capture(0); //create a camera captue
+            //timer = new DispatcherTimer();
+            //timer.Tick += new EventHandler(timer_Tick);
+            //timer.Interval = new TimeSpan(0, 0, 0, 0, 45);
+            //timer.Start();
         }
 
         void timer_Tick(object sender, EventArgs e)
         {
             CameraFrame = capture.QueryFrame();
-            CvInvoke.cvShowImage("Camera Capture", CameraFrame);
+            if (CameraFrame != null)
+            {
+                var img = DetectionImage(CameraFrame);
 
+                CvInvoke.cvShowImage("Detection", img);
+                CvInvoke.cvShowImage("Camera Capture", CameraFrame);
+            }
         }
 
+        private Image<Bgr,byte> Filter(Image<Bgr, byte> sourceImg, bool debugMode = false)
+        {
+            Image<Hsv, byte> img = sourceImg.Convert<Hsv,byte>();
+
+            Image<Gray, byte> blue = ImageTools.FilterColor(img, new Hsv(90, 90, 50), new Hsv(120, 255, 255), debugMode ? "Blue Debug Window" : "");
+            Image<Gray, byte> green = ImageTools.FilterColor(img, new Hsv(35, 70, 35), new Hsv(90, 255, 255), debugMode ? "Green Debug Window" : "");
+            Image<Gray, byte> yellow = ImageTools.FilterColor(img, new Hsv(10, 70, 127), new Hsv(35, 255, 255), debugMode ? "Yellow Debug Window" : "");
+            Image<Gray, byte> red = ImageTools.FilterColor(
+                img,
+                new Tuple<Hsv, Hsv>[]{
+                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+                },
+                debugMode ? "Red Debug Window" : ""
+            );
+            var colorDetection = ImageTools.CombineMaps(new List<Tuple<Image<Gray, byte>, Bgr>> {
+                new Tuple<Image<Gray,byte>,Bgr>(blue, ImageTools.Colors.Blue),
+                new Tuple<Image<Gray,byte>,Bgr>(red, ImageTools.Colors.Red),
+                new Tuple<Image<Gray,byte>,Bgr>(green, ImageTools.Colors.Green),
+                new Tuple<Image<Gray,byte>,Bgr>(yellow, ImageTools.Colors.Yellow),
+            });
+            return colorDetection;
+        }
+
+        private Image<Gray, byte> DetectionImage(Image<Bgr, byte> sourceImg, bool debugMode = false)
+        {
+            Image<Hsv, byte> img = sourceImg.Convert<Hsv, byte>();
+
+            Image<Gray, byte> blue = ImageTools.FilterColor(img, new Hsv(90, 90, 50), new Hsv(120, 255, 255));
+            Image<Gray, byte> green = ImageTools.FilterColor(img, new Hsv(35, 70, 35), new Hsv(90, 255, 255));
+            Image<Gray, byte> yellow = ImageTools.FilterColor(img, new Hsv(10, 70, 127), new Hsv(35, 255, 255));
+            Image<Gray, byte> red = ImageTools.FilterColor(
+                img,
+                new Tuple<Hsv, Hsv>[]{
+                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+                }                
+            );
+
+            DetectionData ddb = ImageTools.DetectSquares(blue, debugMode ? "Blue Debug Window" : "");
+            DetectionData ddr = ImageTools.DetectSquares(red, debugMode ? "Red Debug Window" : "");
+            DetectionData ddg = ImageTools.DetectSquares(green,  debugMode ? "Green Debug Window" : "");
+            DetectionData ddy = ImageTools.DetectSquares(yellow, debugMode ? "Yellow Debug Window" : "");
+            ddb.RemoveNoises();
+            ddr.RemoveNoises();
+            ddg.RemoveNoises();
+            ddy.RemoveNoises();
+            ddb.AddColor(ddr);
+            ddb.AddColor(ddg);
+            ddb.AddColor(ddy);
+            
+            return ddb.DrawDetection().Convert<Gray,byte>();
+        }
+
+        private void FilteringButton_Click(object sender, RoutedEventArgs e)
+        {
+            new FilteringWindow().Show();
+        }
+
+        private void StaticImageFilteringButton_Click(object sender, RoutedEventArgs e)
+        {
+            new StaticImageFilteringWindow().Show();
+        }
+
+        private void BoardButton_Click(object sender, RoutedEventArgs e)
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            Image<Hsv, byte> img = new Image<Hsv, byte>(args[1]);
+
+            Image<Gray, byte> blue = ImageTools.FilterColor(img, new Hsv(90, 90, 50), new Hsv(120, 255, 255));
+            Image<Gray, byte> green = ImageTools.FilterColor(img, new Hsv(35, 70, 35), new Hsv(90, 255, 255));
+            Image<Gray, byte> yellow = ImageTools.FilterColor(img, new Hsv(10, 70, 127), new Hsv(35, 255, 255));
+            Image<Gray, byte> red = ImageTools.FilterColor(
+                img,
+                new Tuple<Hsv, Hsv>[]{
+                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+                }
+            );
+
+            DetectionData ddb = ImageTools.DetectSquares(blue);
+            DetectionData ddr = ImageTools.DetectSquares(red);
+            DetectionData ddg = ImageTools.DetectSquares(green);
+            DetectionData ddy = ImageTools.DetectSquares(yellow);
+            ddb.RemoveNoises();
+            ddr.RemoveNoises();
+            ddg.RemoveNoises();
+            ddy.RemoveNoises();
+            ddb.AddColor(ddr);
+            ddb.AddColor(ddg);
+            ddb.AddColor(ddy);
+
+            var board = ddb.CreateBoard();
+            var di = ddb.DrawDetection().Bitmap;
+            MessageBox.Show("Detected board: " + board.Height + "x" + board.Width);
+
+            ImageTools.ShowInNamedWindow(img.Convert<Bgr, byte>(), "Original");
+        }
+        
+        
     }
 }

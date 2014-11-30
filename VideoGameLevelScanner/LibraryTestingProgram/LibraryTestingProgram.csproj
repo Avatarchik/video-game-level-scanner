@@ -102,6 +102,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ColorsToVisibilityConverter.cs" />
+    <Compile Include="FilteringParameters.cs" />
+    <Compile Include="Converters\ImageToImageSourceConverter.cs" />
+    <Compile Include="Converters\RGBColorConverter.cs" />
+    <Compile Include="Converters\SolidColorBrushToHsvConverter.cs" />
+    <Compile Include="StaticImageFilteringWindow.xaml.cs">
+      <DependentUpon>StaticImageFilteringWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\UniversalValueConverter.cs" />
+    <Page Include="FilteringWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -110,10 +123,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FilteringWindow.xaml.cs">
+      <DependentUpon>FilteringWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="StaticImageFilteringWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -156,7 +176,18 @@
     <Resource Include="TestImages\image2.bmp" />
     <Resource Include="TestImages\noise.bmp" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\yellow_light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\green_light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\red_light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_light.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

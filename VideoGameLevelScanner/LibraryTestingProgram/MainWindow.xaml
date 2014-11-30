@@ -3,8 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Button x:Name="StaticImageButton" Content="Static Image" HorizontalAlignment="Left" Margin="77,70,0,0" VerticalAlignment="Top" Width="75" Click="StaticImageButton_Click"/>
-        <Button x:Name="CameraButton" Content="Camera" HorizontalAlignment="Left" Margin="181,70,0,0" VerticalAlignment="Top" Width="75" Click="CameraButton_Click"/>
+        <Button x:Name="StaticImageButton" Content="Filters" HorizontalAlignment="Left" Margin="77,70,0,0" VerticalAlignment="Top" Width="75" Click="StaticImageButton_Click"/>
+        <Button x:Name="CameraButton" Content="Detection" HorizontalAlignment="Left" Margin="181,70,0,0" VerticalAlignment="Top" Width="75" Click="CameraButton_Click"/>
+        <Button x:Name="FilteringButton" Content="Filtering" HorizontalAlignment="Left" Margin="152,177,0,0" VerticalAlignment="Top" Width="75" Click="FilteringButton_Click" Visibility="Hidden"/>
+        <Button x:Name="StaticImageFilteringButton" Content="Static Image With Selecting" HorizontalAlignment="Left" Margin="77,141,0,0" VerticalAlignment="Top" Click="StaticImageFilteringButton_Click" Visibility="Hidden"/>
+        <Button x:Name="BoardButton" Content="Board Detection" HorizontalAlignment="Left" Margin="360,80,0,0" VerticalAlignment="Top" Width="75" Click="BoardButton_Click"/>
 
     </Grid>
 </Window>

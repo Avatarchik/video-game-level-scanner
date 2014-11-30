@@ -15,13 +15,16 @@ namespace ImageRecognitionLibrary
     public class DetectionData
     {
         public List<List<Rectangle>> ColorBoundingRectangles = new List<List<Rectangle>>();
-	    public double medianSize = 0;
-        public int height = 0;
-        public int width = 0;
-        //public Image<Gray, byte> detectionImage;
+	    private double medianSize = 0;
+        private int height = 0;
+        private int width = 0;
+
+        public double MedianSize { get { return medianSize; } }
+        public int Height { get { return height; } }
+        public int Width { get { return width; } }
         
         #region Constructors
-        DetectionData(List<Rectangle> boundingRectangles, Image<Gray,byte> detectionImage)
+        public DetectionData(List<Rectangle> boundingRectangles, Image<Gray,byte> detectionImage)
         {
 	        ColorBoundingRectangles.Add(boundingRectangles);
 	        CalculateMedianRectSize();
@@ -33,16 +36,16 @@ namespace ImageRecognitionLibrary
         //    ColorBoundingRectangles.AddRange(colorRectangles);	        
         //    CalculateMedianRectSize();
         //}
-        DetectionData(DetectionData source)
+        public DetectionData(DetectionData source)
         {
-	        ColorBoundingRectangles = new List<List<Rectangle>>(source.ColorBoundingRectangles);
+            ColorBoundingRectangles = new List<List<Rectangle>>(source.ColorBoundingRectangles);
 	        medianSize = source.medianSize;
             this.height = source.height;
             this.width = source.width;
         }
         #endregion
         #region Calculating Median
-        double CalculateMedianRectSize(){
+        private double CalculateMedianRectSize(){
 	        List<double> sizes = new List<double>();
 	        double avg;
 	        foreach (var colorList in ColorBoundingRectangles){
@@ -71,11 +74,12 @@ namespace ImageRecognitionLibrary
         }
         #endregion
         #region Adding detection data for other colors
-        void AddColor(List<Rectangle> boundingRectangles){
+        public void AddColor(List<Rectangle> boundingRectangles)
+        {
 	        ColorBoundingRectangles.Add(boundingRectangles);
 	        CalculateMedianRectSize();
         }
-        void AddColor(DetectionData dd){
+        public void AddColor(DetectionData dd){
 	        ColorBoundingRectangles.AddRange(dd.ColorBoundingRectangles);
 	        CalculateMedianRectSize();
             if (this.height != dd.height)
@@ -85,27 +89,14 @@ namespace ImageRecognitionLibrary
         }
         #endregion
         #region Board creation and all functions needed in that process
-        Board CreateBoard(){
+        public Board CreateBoard(){
 
-            List<PointF> columns = new List<PointF>();
-            List<PointF> rows = new List<PointF>();
             var fullDetection = DrawDetection();
-            //int width = fullDetection.cols;
-            //int height = fullDetection.rows;
-            int[] blackPixelCols = new int[width];
-            int[] blackPixelRows = new int[height];
 
-            for (int i = 0; i < width; i++)
-                for (int j = 0; i < height; i++) {
-                    if ((int)fullDetection[j, i].Intensity == 0)
-                    {
-                        blackPixelCols[i]++;
-                        blackPixelRows[i]++;
-                    }
-            }
+            var sums = ImageTools.CalculateSums(fullDetection);
 
-            List<Point> ColsRanges = ColorRanges(blackPixelCols, width);
-            List<Point> RowsRanges = ColorRanges(blackPixelRows, height);
+            List<Point> ColsRanges = ImageTools.ColorRanges(sums.Item1, width);
+            List<Point> RowsRanges = ImageTools.ColorRanges(sums.Item2, height);
 
             int y = ColsRanges.Count();
             int x = RowsRanges.Count();
@@ -115,50 +106,11 @@ namespace ImageRecognitionLibrary
             return board;
         }
 
-        #region Helping methods for finding the Board size 
-
-	        List<Point> ColorRanges(int[] blacks, int size){
-		        List<Point> ranges = new List<Point>();
-		        Point detectedRange = FindRange(blacks, 0, size);
-		        while (detectedRange.X != -1 && detectedRange.Y != -1){
-			        ranges.Add(detectedRange);
-			        detectedRange = FindRange(blacks, detectedRange.Y + 1, size);
-		        }
-		        if (detectedRange.X != -1){
-			        detectedRange.Y = size - 1;
-			        ranges.Add(detectedRange);
-		        }
-		        return ranges;
-	        }
-
-	        Point FindRange(int[] mat, int start, int size){
-		        int a = FindColorIndex(mat, start, size);
-		        int b = FindBlackIndex(mat, a + 1, size);
-		        return new Point(a, b);
-	        }
-
-	        int FindColorIndex(int[] mat, int start, int size){
-		        while (start < size){
-			        if (mat[start] > 0)
-				        return start;
-			        else
-				        start++;
-		        }
-		        return -1;
-	        }
-	        int FindBlackIndex(int[] mat, int start, int size){
-		        while (start < size){
-			        if (mat[start] == 0)
-				        return start;
-			        else
-				        start++;
-		        }
-		        return -1;
-	        }
-	        #endregion
+        
         
         #region Removing Noses
-        int RemoveNoises(float minProcent){
+        public int RemoveNoises(float minProcent = 0.75f)
+        {
 		    if (medianSize <= 0)
 			    return 0;
                 
@@ -171,7 +123,8 @@ namespace ImageRecognitionLibrary
         #endregion
 
         #region Drawing the detected rectangles
-        Image<Gray,byte> DrawDetection(string debugWindow = ""){
+        public Image<Gray, byte> DrawDetection(string debugWindow = "")
+        {
             Image<Gray,byte> img = new Image<Gray,byte>(width,height,new Gray(0));
             Gray color = new Gray(255);
 	        foreach (var rectangleList in ColorBoundingRectangles){

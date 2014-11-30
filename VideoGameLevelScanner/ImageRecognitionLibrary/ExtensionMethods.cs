@@ -12,12 +12,6 @@ namespace RectangleExtension
 {
     public static class ExtensionMethods
     {
-        public static PointF Center(this Rectangle rect)
-        {
-            return new PointF(rect.Left + rect.Width / 2,
-                             rect.Top + rect.Height / 2);
-        }
-
         public static int[] Column(this Image<Gray, byte> img, int index)
         {
             var line = img.Sample(new LineSegment2D(new Point(index, 0), new Point(index, img.Rows - 1)));
