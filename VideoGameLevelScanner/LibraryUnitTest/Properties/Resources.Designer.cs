@@ -163,6 +163,26 @@ namespace LibraryUnitTest.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ExpectedColorsImage {
+            get {
+                object obj = ResourceManager.GetObject("ExpectedColorsImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ExpectedRoomsImage {
+            get {
+                object obj = ResourceManager.GetObject("ExpectedRoomsImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap FilterYellowandRed {
             get {
                 object obj = ResourceManager.GetObject("FilterYellowandRed", resourceCulture);

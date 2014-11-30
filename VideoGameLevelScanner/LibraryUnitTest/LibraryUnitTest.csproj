@@ -104,7 +104,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="FiltersTests.cs" />
+    <Compile Include="ImageToolsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoardTests.cs" />
   </ItemGroup>
@@ -152,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ColumnRowSums.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExpectedColorsImage.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExpectedRoomsImage.bmp" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

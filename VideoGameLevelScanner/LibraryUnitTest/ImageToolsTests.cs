@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace LibraryUnitTest
 {
     [TestClass]
-    public class FiltersTests
+    public class ImageToolsTests
     {
         [TestMethod]
         public void CombineMapsBW()
@@ -28,7 +28,7 @@ namespace LibraryUnitTest
 
             var actual = result;
            
-            Assert.AreEqual(true, CompareBitmaps(expected,actual));            
+            Assert.IsTrue(CompareBitmaps(expected,actual));            
         }
 
         [TestMethod]
@@ -73,9 +73,49 @@ namespace LibraryUnitTest
 
             Assert.IsTrue(CompareBitmaps(expected, actual));
         }
+        #region DetectionImages
+        
+        [TestMethod]
+        public void DrawGrid()
+        {
+                
+        }
 
+        [TestMethod]
+        public void PaintColors()
+        {
+            int[,] array = new int[,]{
+                {0,1,0,4,4,4},
+                {1,1,0,4,1,0},
+                {3,2,2,2,1,0},
+                {3,3,2,2,1,0},
+                {1,1,1,3,3,3}
+            };
+            
+            var expected = Properties.Resources.ExpectedColorsImage;
+            var img = ImageTools.DrawDetectedColors(60, 50, array).Bitmap;
+            
+            Assert.IsTrue(CompareBitmaps(img, expected));
+        }
 
+        [TestMethod]
+        public void PaintRooms()
+        {
+            int[,] array = new int[,]{
+                {0,1,0,4,5,5},
+                {1,1,0,4,6,0},
+                {3,2,2,2,6,7},
+                {3,3,2,2,6,7},
+                {6,6,6,3,3,7}
+            };
+            
+            Bgr[] palette = new Bgr[] { Black, Blue, Red, Green, Yellow, Purple, Turquoise, White };
+            var img = ImageTools.DrawRooms(60, 50, array, palette).Bitmap;
+            var expected = Properties.Resources.ExpectedRoomsImage;
 
+            Assert.IsTrue(CompareBitmaps(img, expected));
+        }
+        #endregion
         #region Helping functions and variables
         private bool CompareBitmaps(System.Drawing.Image left, System.Drawing.Image right)
         {
@@ -83,7 +123,7 @@ namespace LibraryUnitTest
                 return true;
             if (left == null || right == null)
                 return false;
-            if (!left.Size.Equals(right.Size) || !left.PixelFormat.Equals(right.PixelFormat))
+            if (!left.Size.Equals(right.Size))
                 return false;
 
             Bitmap leftBitmap = left as Bitmap;
@@ -110,6 +150,10 @@ namespace LibraryUnitTest
         private Bgr Green = new Bgr(0, 255, 0);
         private Bgr Blue = new Bgr(255, 0, 0);
         private Bgr Yellow = new Bgr(0, 255, 255);
+        private Bgr Purple = new Bgr (255, 0, 255);
+        private Bgr Turquoise = new Bgr(255, 255, 0);
+        private Bgr Black = new Bgr(0, 0, 0);
+        private Bgr White = new Bgr(255, 255, 255);
         private Tuple<Hsv, Hsv>[] rangeRed = new Tuple<Hsv, Hsv>[]{
                     new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
                     new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))

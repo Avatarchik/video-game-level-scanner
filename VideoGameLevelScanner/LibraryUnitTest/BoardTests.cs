@@ -92,10 +92,6 @@ namespace LibraryUnitTest
             Assert.AreEqual(new Point(18, 18), From18To18);
             Assert.AreEqual(new Point(18, 18), From18To18v2);
             Assert.AreEqual(new Point(18, 18), From18To18v3);
-
-
-
-
         }
 
         [TestMethod]

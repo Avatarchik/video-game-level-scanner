@@ -10,6 +10,7 @@ using Emgu.CV.UI;
 using Emgu.CV.Structure;
 namespace ImageRecognitionLibrary
 {
+    enum ColorIndex { Blue = 1, Red, Green, Yellow };
     public static class ImageTools
     {
         #region Displaying Images
@@ -52,11 +53,15 @@ namespace ImageRecognitionLibrary
         #region Squares detection
         public static DetectionData DetectSquares(Image<Gray, byte> src, string detectionWindow = "")
         {
-            //src = src.PyrDown().PyrUp();
+            for (int i = 0; i < 1; i++)
+            {
+                src = src.PyrDown();
+                src = src.PyrUp();
+            }
             src = src.Erode(1);
 
             Gray cannyThreshold = new Gray(255);
-            Gray cannyThresholdLinking = new Gray(180);
+            Gray cannyThresholdLinking = new Gray(1);
 
             Image<Gray, Byte> cannyEdges = src.Canny(cannyThreshold.Intensity,cannyThresholdLinking.Intensity,3);
             LineSegment2D[] lines = cannyEdges.HoughLinesBinary(
@@ -74,28 +79,14 @@ namespace ImageRecognitionLibrary
                 for (Contour<Point> contours = cannyEdges.FindContours(); contours != null; contours = contours.HNext)
                 {
                     Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.05, storage);
- 
-                    if (contours.Area > 50) //only consider contours with area greater than 250
-                    {
-                        if (currentContour.Total >= 4) //The contour has 4 vertices.
-                        {
-                        bool isRectangle = true;
-                        Point[] pts = currentContour.ToArray();
-                        LineSegment2D[] edges = PointCollection.PolyLine(pts, true);
- 
-                        //for (int i = 0; i < edges.Length; i++)
-                        //{
-                        //    double angle = Math.Abs(
-                        //        edges[(i + 1) % edges.Length].GetExteriorAngleDegree(edges[i]));
-                        //    if (angle < 60 || angle > 120)
-                        //    {
-                        //        isRectangle = false;
-                        //        break;
-                        //    }
-                        //}
 
-                        if (isRectangle) 
-                            rectanglesList.Add(currentContour.BoundingRectangle);
+                    if (currentContour.BoundingRectangle.Height * currentContour.BoundingRectangle.Width > 50) //only consider contours with area greater than 250
+                    {
+                        if (currentContour.Total >= 4) //The contour has more than 4 vertices.
+                        {
+                            var boundingRectangle = currentContour.BoundingRectangle;
+                            if (!rectanglesList.Exists(rect => rect.IntersectsWith(boundingRectangle))) 
+                                rectanglesList.Add(boundingRectangle);
                         }
                     }
                 }
@@ -176,6 +167,50 @@ namespace ImageRecognitionLibrary
             return -1;
         }
         #endregion
+        #region Drawing Images from int arrays
+        public static Image<Bgr, byte> DrawDetectedColors(int maxWidth, int maxHeight, int[,] data)
+        {
+            return DrawLookupImage(maxWidth, maxHeight, data, Colors.ColorsArray);
+        }
+
+        public static Image<Bgr, byte> DrawRooms(int maxWidth, int maxHeight, int[,] data)
+        {
+            Bgr[] palette = GetRandomPalette(data.Cast<int[]>().Distinct().Count());
+            return null;
+        }
+
+        public static Image<Bgr, byte> DrawRooms(int maxWidth, int maxHeight, int[,] data, Bgr[] palette)
+        {
+            return DrawLookupImage(maxWidth, maxHeight, data, palette);
+        }
+
+        private static Image<Bgr,byte> DrawLookupImage(int maxWidth, int maxHeight, int[,] data, Bgr[] palette)
+        {
+            int boardHeight = data.GetLength(0);
+            int boardWidth = data.GetLength(1);
+            Image<Bgr, byte> img = new Image<Bgr, byte>(boardWidth, boardHeight);
+            for (int x = 0; x < boardHeight; ++x)
+            {
+                for (int y = 0; y < boardWidth; ++y)
+                {
+                    img[x, y] = palette[data[x, y]];
+                }
+            }
+            return img.Resize(maxWidth,maxHeight,Emgu.CV.CvEnum.INTER.CV_INTER_NN);
+        }
+
+        private static Bgr[] GetRandomPalette(int paletteSize)
+        {
+            Random rand = new Random();
+            Bgr[] palette = new Bgr[paletteSize];
+            palette[0] = Colors.Black;
+            for (int i = 1; i < paletteSize; ++i)
+            {
+                palette[i] = new Bgr(rand.Next() % 256, rand.Next() % 256, rand.Next() % 256);
+            }
+            return palette;
+        }
+        #endregion
         #region Combining images
         public static Image<Bgr, byte> CombineMaps(IEnumerable<Tuple<Image<Gray, byte>, Bgr>> maps)
         {
@@ -208,6 +243,8 @@ namespace ImageRecognitionLibrary
             public static Bgr Green = new Bgr(0, 255, 0);
             public static Bgr Yellow = new Bgr(0, 255, 255);
 
+            public static Bgr[] ColorsArray = new Bgr[] { Black, Blue, Red, Green, Yellow };
+ 
             public static Bgr White = new Bgr(255, 255, 255);
             public static Bgr Black = new Bgr(0, 0, 0);
         }
