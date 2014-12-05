@@ -20,7 +20,7 @@ public class LevelBuilder : MonoBehaviour {
                 MatchHash(MakeHash(matrix[x, y], matrix[x + 1, y], matrix[x+1, y+1], matrix[x, y+1]), unit, x, y);
                 if (y < (matrix.GetLength(1) - 2) && x!=0)
                 {
-                    Instantiate(floor, new Vector3(x * unit, 0, y * unit), Quaternion.Euler(270f, 0f, 0f));
+                    Spawn(floor, 0, unit, x, y);
                 }
 			}
 		}
@@ -29,6 +29,12 @@ public class LevelBuilder : MonoBehaviour {
 
 	void Update () {	
 	}
+
+    void Spawn(Transform obj, float rotation, int unit, int x, int y)
+    {
+        Transform t = (Transform)Instantiate(obj, new Vector3(x * unit, 0, y * unit), Quaternion.Euler(270f, rotation, 0f));
+        t.parent = GameObject.Find("LevelCreator").transform;
+    }
 
     //function that generates a unique hash, given 4 cells of a room-matrix
 	int MakeHash(int a, int b, int c, int d) {
@@ -64,44 +70,45 @@ public class LevelBuilder : MonoBehaviour {
             case 0000: //no wall
                 break;
             case 0100: //corner
-                Instantiate(corner, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,180f,0f));
+                Spawn(corner, 180, unit, x, y);
                 break;
             case 0010:
-                Instantiate(corner, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,90f,0f));
+                Spawn(corner, 90, unit, x, y);
                 break;
             case 0001:
-                Instantiate(corner, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,0f,0f));
+                Spawn(corner, 0, unit, x, y);
                 break;
             case 0111:
-                Instantiate(corner, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,270f,0f));
+                Spawn(corner, 270, unit, x, y);
                 break;
             case 0110: //2wall
-                Instantiate(wall, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,90f,0f));
+                Spawn(wall, 90, unit, x, y);
                 break;
             case 0011:
-                Instantiate(wall, new Vector3(x * unit, 0, y * unit), Quaternion.Euler(270f, 0f, 0f));
+                Spawn(wall, 0, unit, x, y);
                 break;
             case 0112: //3wall
-                Instantiate(tricorner, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,90f,0f));
+                Spawn(tricorner, 90, unit, x, y);
                 break;
             case 0120:
-                Instantiate(tricorner, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,270f,0f));
+                Spawn(tricorner, 270, unit, x, y);
                 break;
             case 0012:
-                Instantiate(tricorner, new Vector3(x * unit, 0, y * unit), Quaternion.Euler(270f, 180f, 0f));
+                Spawn(tricorner, 180, unit, x, y);
                 break;
             case 0122:
-                Instantiate(tricorner, new Vector3(x*unit, 0, y*unit), Quaternion.Euler(270f,0f,0f));
+                Spawn(tricorner, 0, unit, x, y);
                 break;
             case 0101: //4wall
             case 0121:
             case 0123:
-                Instantiate(cross, new Vector3(x * unit, 0, y * unit), Quaternion.Euler(270f, 0f, 0f));
+                Spawn(cross, 0, unit, x, y);
                 break;
             default:
                 Debug.LogWarning("Error reading hash, incorrect h23ash");
                 break;
         }
+    }
 
-    }	
+
 }
