@@ -76,12 +76,6 @@ namespace LibraryUnitTest
         #region DetectionImages
         
         [TestMethod]
-        public void DrawGrid()
-        {
-                
-        }
-
-        [TestMethod]
         public void PaintColors()
         {
             int[,] array = new int[,]{

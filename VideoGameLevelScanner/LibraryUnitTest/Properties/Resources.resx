@@ -145,9 +145,6 @@
   <data name="Combineresult" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Combineresult.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ElevenSquares" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\3RedSquares.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ExpectedColorsImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExpectedColorsImage.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -156,5 +153,11 @@
   </data>
   <data name="FilterYellowandRed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FilterYellowandRed.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FourSquaresWithTenNoises" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FourSquaresWithTenNoises.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ThreeSquares" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ThreeSquares.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

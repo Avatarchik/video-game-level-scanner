@@ -133,9 +133,6 @@
     <None Include="Resources\Combine1.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\3RedSquares.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Combine2.bmp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +155,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ExpectedRoomsImage.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\FourSquaresWithTenNoises.bmp" />
+    <Content Include="Resources\ThreeSquares.bmp" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

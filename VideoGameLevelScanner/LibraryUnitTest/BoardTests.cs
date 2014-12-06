@@ -12,9 +12,13 @@ namespace LibraryUnitTest
     public class BoardTests
     {
         [TestMethod]
-        public void ShouldReturn3x5()
+        public void ShouldReturnBoard2x2()
         {
-
+            Image<Gray, byte> frame = new Image<Gray, byte>(Properties.Resources.ThreeSquares);
+            var dd = ImageTools.DetectSquares(frame);
+            Board board = dd.CreateBoard();
+            Assert.AreEqual(2, board.Height);
+            Assert.AreEqual(2, board.Width);
         }
 
         [TestMethod]

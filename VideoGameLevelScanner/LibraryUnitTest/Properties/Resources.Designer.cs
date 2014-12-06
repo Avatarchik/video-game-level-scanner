@@ -153,16 +153,6 @@ namespace LibraryUnitTest.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ElevenSquares {
-            get {
-                object obj = ResourceManager.GetObject("ElevenSquares", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap ExpectedColorsImage {
             get {
                 object obj = ResourceManager.GetObject("ExpectedColorsImage", resourceCulture);
@@ -186,6 +176,26 @@ namespace LibraryUnitTest.Properties {
         internal static System.Drawing.Bitmap FilterYellowandRed {
             get {
                 object obj = ResourceManager.GetObject("FilterYellowandRed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap FourSquaresWithTenNoises {
+            get {
+                object obj = ResourceManager.GetObject("FourSquaresWithTenNoises", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ThreeSquares {
+            get {
+                object obj = ResourceManager.GetObject("ThreeSquares", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
