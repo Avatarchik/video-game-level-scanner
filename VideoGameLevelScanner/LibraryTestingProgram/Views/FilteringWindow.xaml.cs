@@ -11,16 +11,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace LibraryTestingProgram
+namespace LibraryTestingProgram.Views
 {
     /// <summary>
     /// Interaction logic for FilteringWindow.xaml
     /// </summary>
     public partial class FilteringWindow : Window
     {
+        public UserSettings filteringSettings = UserSettings.instance;
         public FilteringWindow()
         {
             InitializeComponent();
+            this.DataContext = filteringSettings;
         }
     }
 }

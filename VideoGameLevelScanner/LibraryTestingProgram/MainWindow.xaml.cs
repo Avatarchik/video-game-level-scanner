@@ -19,6 +19,7 @@ using Emgu.CV.UI;
 
 using ImageRecognitionLibrary;
 using System.Windows.Threading;
+using LibraryTestingProgram.Views;
 
 namespace LibraryTestingProgram
 {

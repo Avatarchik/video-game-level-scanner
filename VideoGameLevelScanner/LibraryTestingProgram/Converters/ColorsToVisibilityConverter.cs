@@ -29,7 +29,7 @@ namespace LibraryTestingProgram
                 && s <= theS && theS <= S
                 && v <= theV && theV <= V)
                 return Visibility.Visible;
-            return Visibility.Visible;
+            return Visibility.Hidden;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
