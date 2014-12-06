@@ -109,14 +109,17 @@ namespace ImageRecognitionLibrary
         
         
         #region Removing Noses
-        public int RemoveNoises(float minProcent = 0.75f)
+        public int RemoveNoises(float minProcent = 0.80f)
         {
-		    if (medianSize <= 0)
-			    return 0;
-                
+            if (ColorBoundingRectangles.Count == 0 || !ColorBoundingRectangles.Any(rectangles=> rectangles.Count > 0))
+                return 0;
+
+            double minH = minProcent * ColorBoundingRectangles.Where(rectanglesList => rectanglesList.Count > 0).Max(rectangles => rectangles.Max(rectangle => rectangle.Height));
+            double minW = minProcent * ColorBoundingRectangles.Where(rectanglesList => rectanglesList.Count > 0).Max(rectangles => rectangles.Max(rectangle => rectangle.Width));
+
             int counter = 0;
-            double minSize = minProcent * medianSize;
-            ColorBoundingRectangles.ForEach(rectanglesList => rectanglesList.RemoveAll(rectangle => rectangle.Height < minSize || rectangle.Width < minSize));
+
+            ColorBoundingRectangles.ForEach(rectanglesList => rectanglesList.RemoveAll(rectangle => rectangle.Height < minH || rectangle.Width < minW));
             return counter;
 	    }
         #endregion
