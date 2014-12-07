@@ -15,7 +15,7 @@ public class LevelBuilder : MonoBehaviour {
     void Start () {
         //example matrix
 		matrix = new int [,] {{0,0,0,0,0,0,0},{0,9,3,5,8,8,0},{0,9,1,1,1,1,0},{0,9,2,2,2,3,0},{0,9,3,3,2,4,0},{0,9,9,9,9,9,0},{0,0,0,0,0,0,0}};
-        Vector3 shift = new Vector3((matrix.GetLength(0)*unit)/2+unit, 0f, (matrix.GetLength(1)*unit)/2);
+        Vector3 shift = new Vector3(((matrix.GetLength(0)-2)*unit)/2, 0f, ((matrix.GetLength(1)-2)*unit)/2);
         GameObject.Find("LevelCreator").transform.position = shift;
 		for (int x=0; x<(matrix.GetLength(0)-1); x++) {
 			for (int y=0; y<(matrix.GetLength(1)-1); y++) {

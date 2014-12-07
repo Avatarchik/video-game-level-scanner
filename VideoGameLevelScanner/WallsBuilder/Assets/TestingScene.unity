@@ -132,6 +132,7 @@ GameObject:
   - 124: {fileID: 1017042247}
   - 81: {fileID: 1017042246}
   - 114: {fileID: 1017042251}
+  - 114: {fileID: 1017042252}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -179,7 +180,7 @@ Camera:
   near clip plane: .300000012
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -212,7 +213,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1017042245}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7ef56524a0bde14fae54fb433b8a978, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f9d1e671c9821545be174e0dd590d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 832154519}
@@ -221,3 +222,19 @@ MonoBehaviour:
   ySpeed: 120
   yMinLimit: -20
   yMaxLimit: 80
+--- !u!114 &1017042252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1017042245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbe34eb42b126f42ab54af9af7db557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 50
+  sensitivityDistance: 50
+  damping: 10
+  minDistance: 5
+  maxDistance: 200
