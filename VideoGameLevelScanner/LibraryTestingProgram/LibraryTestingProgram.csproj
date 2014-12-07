@@ -124,6 +124,9 @@
     <Compile Include="Converters\RGBColorConverter.cs" />
     <Compile Include="Converters\SolidColorBrushToHsvConverter.cs" />
     <Compile Include="ViewModels\ImagesSetViewModel.cs" />
+    <Compile Include="Views\PreviewImagesWindow.xaml.cs">
+      <DependentUpon>PreviewImagesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StaticImageFilteringWindow.xaml.cs">
       <DependentUpon>StaticImageFilteringWindow.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\PreviewImagesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StaticImageFilteringWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

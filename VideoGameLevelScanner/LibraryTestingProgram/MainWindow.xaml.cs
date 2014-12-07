@@ -174,6 +174,11 @@ namespace LibraryTestingProgram
 
             ImageTools.ShowInNamedWindow(img.Convert<Bgr, byte>(), "Original");
         }
+
+        private void PreviewImagesButton_Click(object sender, RoutedEventArgs e)
+        {
+            new PreviewImagesWindow().Show();
+        }
         
         
     }

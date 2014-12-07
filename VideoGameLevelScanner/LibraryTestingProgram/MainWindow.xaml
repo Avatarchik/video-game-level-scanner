@@ -1,13 +1,14 @@
 ﻿<Window x:Class="LibraryTestingProgram.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button x:Name="StaticImageButton" Content="Filters" HorizontalAlignment="Left" Margin="77,70,0,0" VerticalAlignment="Top" Width="75" Click="StaticImageButton_Click"/>
-        <Button x:Name="CameraButton" Content="Detection" HorizontalAlignment="Left" Margin="181,70,0,0" VerticalAlignment="Top" Width="75" Click="CameraButton_Click"/>
-        <Button x:Name="FilteringButton" Content="Filtering" HorizontalAlignment="Left" Margin="152,177,0,0" VerticalAlignment="Top" Width="75" Click="FilteringButton_Click" />
-        <Button x:Name="StaticImageFilteringButton" Content="Static Image With Selecting" HorizontalAlignment="Left" Margin="77,141,0,0" VerticalAlignment="Top" Click="StaticImageFilteringButton_Click" />
-        <Button x:Name="BoardButton" Content="Board Detection" HorizontalAlignment="Left" Margin="360,80,0,0" VerticalAlignment="Top" Width="75" Click="BoardButton_Click"/>
+        Title="MainWindow" Height="253" Width="185">
+    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Button x:Name="StaticImageButton" Content="Filters" HorizontalAlignment="Center" VerticalAlignment="Top" Click="StaticImageButton_Click" Margin="0,10,0,0" Width="150" Visibility="Collapsed"/>
+        <Button x:Name="CameraButton" Content="Detection" HorizontalAlignment="Center" VerticalAlignment="Top" Click="CameraButton_Click" Margin="0,10,0,0" Width="150" Visibility="Collapsed"/>
+        <Button x:Name="FilteringButton" Content="Filtering Parameters" HorizontalAlignment="Center"  VerticalAlignment="Top" Click="FilteringButton_Click" Margin="0,10,0,0" Width="150" />
+        <Button x:Name="StaticImageFilteringButton" Content="Static Image Filtering &#x0a;       &amp; Detection" HorizontalAlignment="Center" VerticalAlignment="Top" Click="StaticImageFilteringButton_Click" Margin="0,10,0,0" Width="150" />
+        <Button x:Name="BoardButton" Content="Board Detection" HorizontalAlignment="Center"  VerticalAlignment="Top" Click="BoardButton_Click" Margin="0,10,0,0" Width="150"/>
+        <Button x:Name="PreviewImagesButton" Content="Preview Images" HorizontalAlignment="Center" VerticalAlignment="Top" Click="PreviewImagesButton_Click" Margin="0,10,0,0" Width="150"/>
 
-    </Grid>
+    </StackPanel>
 </Window>

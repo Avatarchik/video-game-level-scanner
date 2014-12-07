@@ -175,8 +175,8 @@ namespace ImageRecognitionLibrary
 
         public static Image<Bgr, byte> DrawRooms(int maxWidth, int maxHeight, int[,] data)
         {
-            Bgr[] palette = GetRandomPalette(data.Cast<int[]>().Distinct().Count());
-            return null;
+            Bgr[] palette = GetRandomPalette(data.Cast<int>().Distinct().Count());
+            return DrawLookupImage(maxWidth, maxHeight, data, palette);
         }
 
         public static Image<Bgr, byte> DrawRooms(int maxWidth, int maxHeight, int[,] data, Bgr[] palette)
