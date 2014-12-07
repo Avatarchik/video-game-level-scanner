@@ -20,12 +20,35 @@ namespace LibraryTestingProgram.ViewModels
         Image<Bgr,byte> composedImg;
         string imageFilePath;
         OperationType operation;
+        Board board;
 
         public Bitmap SourceImg { get { return sourceImg.Bitmap; } }
         public Bitmap BlueImg { get { return blueImg.Bitmap; } }
         public Bitmap RedImg { get { return redImg.Bitmap; } }
         public Bitmap GreenImg { get { return greenImg.Bitmap; } }
         public Bitmap YellowImg { get { return yellowImg.Bitmap; } }
+
+        public int BoardX
+        {
+            get
+            {
+                if (board != null)
+                    return board.Height;
+                else
+                    return 0;
+            }
+        }
+        public int BoardY
+        {
+            get
+            {
+                if (board != null)
+                    return board.Width;
+                else
+                    return 0;
+            }
+        }
+
         
         public OperationType Operation 
         { 
@@ -101,6 +124,8 @@ namespace LibraryTestingProgram.ViewModels
                 redImg = ddr.DrawDetection();
                 greenImg = ddg.DrawDetection();
                 yellowImg = ddy.DrawDetection();
+
+                this.board = common.CreateBoard();
             }
 
 

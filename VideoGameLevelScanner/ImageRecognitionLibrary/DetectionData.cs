@@ -101,6 +101,9 @@ namespace ImageRecognitionLibrary
             int y = ColsRanges.Count();
             int x = RowsRanges.Count();
 
+            if (x < 1 || y < 1)
+                return null;
+
             Board board = new Board(x, y);
        
             return board;

@@ -7,7 +7,7 @@
         <Button x:Name="CameraButton" Content="Detection" HorizontalAlignment="Center" VerticalAlignment="Top" Click="CameraButton_Click" Margin="0,10,0,0" Width="150" Visibility="Collapsed"/>
         <Button x:Name="FilteringButton" Content="Filtering Parameters" HorizontalAlignment="Center"  VerticalAlignment="Top" Click="FilteringButton_Click" Margin="0,10,0,0" Width="150" />
         <Button x:Name="StaticImageFilteringButton" Content="Static Image Filtering &#x0a;       &amp; Detection" HorizontalAlignment="Center" VerticalAlignment="Top" Click="StaticImageFilteringButton_Click" Margin="0,10,0,0" Width="150" />
-        <Button x:Name="BoardButton" Content="Board Detection" HorizontalAlignment="Center"  VerticalAlignment="Top" Click="BoardButton_Click" Margin="0,10,0,0" Width="150"/>
+        <Button x:Name="BoardButton" Content="Board Detection" HorizontalAlignment="Center"  VerticalAlignment="Top" Click="BoardButton_Click" Margin="0,10,0,0" Width="150" Visibility="Collapsed"/>
         <Button x:Name="PreviewImagesButton" Content="Preview Images" HorizontalAlignment="Center" VerticalAlignment="Top" Click="PreviewImagesButton_Click" Margin="0,10,0,0" Width="150"/>
 
     </StackPanel>
