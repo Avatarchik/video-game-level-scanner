@@ -16,11 +16,19 @@ namespace LibraryUnitTest
         [TestMethod]
         public void ShouldDetect3Squares()
         {
-            Image<Gray, byte> frame = new Image<Gray, byte>(Properties.Resources.ElevenSquares);
+            Image<Gray, byte> frame = new Image<Gray, byte>(Properties.Resources.ThreeSquares);
             var dd = ImageTools.DetectSquares(frame);
             Assert.AreEqual(3, dd.ColorBoundingRectangles.First().Count);
         }
 
+        [TestMethod]
+        public void RemoveNoises()
+        {
+            Image<Gray, byte> frame = new Image<Gray, byte>(Properties.Resources.FourSquaresWithTenNoises);
+            var dd = ImageTools.DetectSquares(frame);
+            dd.RemoveNoises();
+            Assert.AreEqual(4, dd.ColorBoundingRectangles.First().Count);
+        }
 
     }
 }
