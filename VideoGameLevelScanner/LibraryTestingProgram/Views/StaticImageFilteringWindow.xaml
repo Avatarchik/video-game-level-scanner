@@ -12,7 +12,11 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <DockPanel>
-            <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                <RadioButton x:Name="FilteringRadioButton" Content="Filtering" Height="25" Margin="15,0,0,0" IsChecked="True" Checked="FilteringRadioButton_Checked" />
+                <RadioButton x:Name="DetectionRadioButton" Content="Detection" Margin="25,0,0,0" Checked="DetectionRadioButton_Checked" />
+            </StackPanel>
+            <DockPanel DockPanel.Dock="Bottom">
                 <Button x:Name="LoadImageButton" Content="Load Image" DockPanel.Dock="Right" Click="LoadImageButton_Click"/>
                 <TextBlock x:Name="FilePathTextBlock" TextWrapping="Wrap" Text="{Binding ImageFilePath}" Width="100" />
             </DockPanel>

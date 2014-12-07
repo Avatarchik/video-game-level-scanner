@@ -27,14 +27,14 @@ namespace LibraryTestingProgram.Views
 
         public StaticImageFilteringWindow()
         {
-            InitializeComponent();
             this.ViewModel = new ImagesSetViewModel();
+            InitializeComponent();
             this.DataContext = ViewModel;
         }
 
         private void LoadImageButton_Click(object sender, RoutedEventArgs e)
         {
-            var fileDialog = new Microsoft.Win32.OpenFileDialog(){Filter = "BMP files (*.bmp)|*.bmp"};
+            var fileDialog = new Microsoft.Win32.OpenFileDialog(){Filter = "BMP files (*.bmp)|*.bmp|JPEG files|*.jpg"};
             bool? result = fileDialog.ShowDialog();
 
             if (result == false)
@@ -42,13 +42,26 @@ namespace LibraryTestingProgram.Views
 
             string filePath = fileDialog.FileName;
 
-            var vm = new ImagesSetViewModel();
-            vm.ImageFilePath = filePath;
-            this.ViewModel = vm;
-            
-            this.DataContext = ViewModel;
+            UpdateViewModel(ViewModel.Operation, filePath);
         }
 
+        private void FilteringRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateViewModel(OperationType.Filtering, ViewModel.ImageFilePath);
+        }
+
+        private void DetectionRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateViewModel(OperationType.Detection, ViewModel.ImageFilePath);
+        }
+
+        private void UpdateViewModel(OperationType operation, string path)
+        {
+            var vm = new ImagesSetViewModel(operation, path);
+            this.ViewModel = vm;
+            this.DataContext = ViewModel;
+        }
+        
 
     }
 }
