@@ -10,7 +10,7 @@ using Emgu.CV.UI;
 using Emgu.CV.Structure;
 namespace ImageRecognitionLibrary
 {
-    enum ColorIndex { Blue = 1, Red, Green, Yellow };
+    enum ColorIndex { Blue = -1, Red=-2, Green=-3, Yellow=-4};
     public static class ImageTools
     {
         #region Displaying Images

@@ -98,7 +98,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DetectionTests.cs" />
+    <Compile Include="DetectionDataTests.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -107,6 +107,7 @@
     <Compile Include="ImageToolsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoardTests.cs" />
+    <Compile Include="IntegrationTesting.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -157,6 +158,7 @@
     <None Include="Resources\ExpectedRoomsImage.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\BoardSample.bmp" />
     <Content Include="Resources\FourSquaresWithTenNoises.bmp" />
     <Content Include="Resources\ThreeSquares.bmp" />
   </ItemGroup>

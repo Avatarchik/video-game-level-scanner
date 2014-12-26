@@ -140,6 +140,38 @@ namespace LibraryUnitTest
             Assert.AreEqual(-1, shouldBeMinusOne);
         }
 
+        [TestMethod]
+        public void ColorMatrix()
+        {
+            var dd = PrepareDetectionDataExample();
+            Board board = dd.CreateBoard();
+            int[,] expected = { { 0, -1, -1, -3 }, { -2, -4, -4, -3 }, { -2, -3, -3, -1 }, { 0, 0, -1, -1 } };
+            for (int x = 0; x < 4; ++x)
+                for (int y = 0; y < 4; ++y)
+                    Assert.AreEqual(expected[x, y], board.Grid[x, y]);
+        }
+
+        [TestMethod]
+        public void RoomsMatrix()
+        {
+            var dd = PrepareDetectionDataExample();
+            Board board = dd.CreateBoard();
+            board.DetectRooms();
+            int[,] expected = { { 0, 4, 4, 5 }, { 1, 2, 2, 5 }, { 1, 3, 3, 6 }, { 0, 0, 6, 6 } };
+            for (int x = 0; x < 4; ++x)
+                for (int y = 0; y < 4; ++y)
+                    Assert.AreEqual(expected[x, y], board.Grid[x, y]);
+        }
+
+        private DetectionData PrepareDetectionDataExample()
+        {
+            var dd = new DetectionData(new Size(450,450));
+            dd.AddColor(new List<Rectangle> { new Rectangle(120, 10, 100, 100), new Rectangle(230, 10, 100, 100), new Rectangle(340, 230, 100, 100), new Rectangle(230, 340, 100, 100), new Rectangle(340, 340, 100, 100) });
+            dd.AddColor(new List<Rectangle> { new Rectangle(10, 120, 100, 100), new Rectangle(10, 230, 100, 100) });
+            dd.AddColor(new List<Rectangle> { new Rectangle(340, 10, 100, 100), new Rectangle(340, 120, 100, 100), new Rectangle(120, 230, 100, 100), new Rectangle(230, 230, 100, 100) });
+            dd.AddColor(new List<Rectangle> { new Rectangle(120, 120, 100, 100), new Rectangle(230, 120, 100, 100) });
+            return dd;
+        }
 
     }
 }
