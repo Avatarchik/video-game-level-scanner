@@ -195,11 +195,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="TestImages\DetectionTest4x4.bmp" />
-    <Resource Include="TestImages\DetectionTest5x5.bmp" />
     <Resource Include="TestImages\Grid1.bmp" />
     <Resource Include="TestImages\image.bmp" />
-    <Resource Include="TestImages\image2.bmp" />
     <Resource Include="TestImages\noise.bmp" />
   </ItemGroup>
   <ItemGroup>
