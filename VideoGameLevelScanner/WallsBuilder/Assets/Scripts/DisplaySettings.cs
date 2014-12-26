@@ -1,57 +1,47 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public class DisplaySettings : MonoBehaviour {
 
     public enum Mode { Half, Full, Empty }
+	public enum Side { Top, Bottom, Left, Right }
+	//private static Dictionary<Side,string> SidesNames = new Dictionary<Side, string>{ {Side.Top,"Top"}, {Side.Top,""}, {Side.Left,"Left"}, {Side.Right,"Right"},  };
+	private static string[] SidesNames = Enum.GetNames(typeof(Side));
+	private static Dictionary<Mode,Mesh> modesMeshes;
+	public Mesh fullMesh;
+	public Mesh halfMesh;
+	public Mesh emptyMesh;
 
-    public Mode Top = Mode.Empty;
-    public Mode Right = Mode.Empty;
-    public Mode Bottom = Mode.Empty;
-    public Mode Left = Mode.Empty;
+	[SerializeField]
+	private Mode top = Mode.Empty;
+	public Mode Top { get { return top; } set { top = value; ChangeVisibility(Side.Top,value); } }
+	[SerializeField]
+	private Mode bottom = Mode.Empty;
+	public Mode Right { get { return bottom; } set { bottom = value; } }
+	[SerializeField]
+	private Mode left = Mode.Empty;
+	public Mode Bottom { get { return left; } set { left = value; } }
+	[SerializeField]
+	private Mode right = Mode.Empty;
+	public Mode Left { get { return right; } set { right = value; } }
 
 	void Start () {
-        ToggleVisibility(Top, 0);
-        ToggleVisibility(Right, 1);
-        ToggleVisibility(Bottom, 2);
-        ToggleVisibility(Left, 3);
+		modesMeshes= new Dictionary<Mode, Mesh>(){ {Mode.Empty,emptyMesh} , {Mode.Half,halfMesh}, {Mode.Full,fullMesh}};
    	}
 
-    public void ToggleVisibility(Mode side, int n)
+    public void ChangeVisibility(Side side, Mode mode)
     {
-        //Renderer r0 = this.transform.Find("Middle").renderer.enabled = true;
-       Renderer r1 = null;
-       Renderer r2 = null;
-       if (n == 0) {
-            r2 = this.transform.Find("Top").renderer;
-            r1 = this.transform.Find("TopHalf").renderer;
-       } else if (n == 1) {
-            r2 = this.transform.Find("Right").renderer;
-            r1 = this.transform.Find("RightHalf").renderer;
-       } else if (n == 2) {
-            r2 = this.transform.Find("Bottom").renderer;
-            r1 = this.transform.Find("BottomHalf").renderer;
-       } else if (n == 3) {
-            r2 = this.transform.Find("Left").renderer;
-            r1 = this.transform.Find("LeftHalf").renderer;
-       }
-       if (side == Mode.Empty) {
-           r2.enabled = false;
-           r1.enabled = false;
-       }
-       else if (side == Mode.Half)
-       {
-           r2.enabled = false;
-           r1.enabled = true;
-       } 
-       else if (side == Mode.Full)
-           r2.enabled = true;
-           r1.enabled = false;
+		MeshFilter meshFilter = this.transform.FindChild(SidesNames [(int)side]).GetComponent<MeshFilter>();
+		meshFilter.mesh = modesMeshes [mode];
+      
     }
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Input.GetKeyDown(KeyCode.UpArrow))
+			Top = Mode.Full;
 	}
+
 }
