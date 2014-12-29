@@ -3,15 +3,12 @@ using System.Collections;
 
 public class LevelBuilder : MonoBehaviour {
 
-	public Transform wall;
-	public Transform corner;
-	public Transform tricorner;
-	public Transform cross;
     public Transform floor;
+    public Transform multiwall;
 	public int [,] matrix;
     public int unit = 8;
     static Quaternion constQuaternion;
-    
+
     void Start () {
         //example matrix
 		matrix = new int [,] {{0,0,0,0,0,0,0},{0,9,3,5,8,8,0},{0,9,1,1,1,1,0},{0,9,2,2,2,3,0},{0,9,3,3,2,4,0},{0,9,9,9,9,9,0},{0,0,0,0,0,0,0}};
@@ -22,20 +19,28 @@ public class LevelBuilder : MonoBehaviour {
                 MatchHash(MakeHash(matrix[x, y], matrix[x + 1, y], matrix[x+1, y+1], matrix[x, y+1]), unit, x, y);
                 if (y < (matrix.GetLength(1) - 2) && x!=0)
                 {
-                    Spawn(floor, 0, unit, x, y);
+                    var t = (Transform)Instantiate(floor, new Vector3(x * unit, 0, y * unit), Quaternion.identity);
+                    t.rotation = floor.rotation;
+                    t.parent = this.transform;
                 }
 			}
 		}
 	}
 	
 
+
 	void Update () {	
 	}
 
-    void Spawn(Transform obj, float rotation, int unit, int x, int y)
+    void Spawn(MultiWallScript.Mode topMode, MultiWallScript.Mode leftMode, MultiWallScript.Mode bottomMode, MultiWallScript.Mode rightMode, int unit, int x, int y)
     {
-        Transform t = (Transform)Instantiate(obj, new Vector3(x * unit, 0, y * unit), Quaternion.Euler(270f, rotation, 0f));
-        t.parent = GameObject.Find("LevelCreator").transform;
+        var obj = (Transform)Instantiate(multiwall, new Vector3(x * unit, 0, y * unit), Quaternion.identity);
+        MultiWallScript sides = obj.GetComponent<MultiWallScript>();
+        sides.Top = topMode;
+        sides.Right = rightMode;
+        sides.Bottom = bottomMode;
+        sides.Left = leftMode;
+        obj.transform.parent = GameObject.Find("LevelCreator").transform;
     }
 
     //function that generates a unique hash, given 4 cells of a room-matrix
@@ -72,39 +77,39 @@ public class LevelBuilder : MonoBehaviour {
             case 0000: //no wall
                 break;
             case 0100: //corner
-                Spawn(corner, 180, unit, x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Empty, unit, x, y);
                 break;
             case 0010:
-                Spawn(corner, 90, unit, x, y);
+                Spawn(MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, unit, x, y);
                 break;
             case 0001:
-                Spawn(corner, 0, unit, x, y);
+                Spawn(MultiWallScript.Mode.Empty, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             case 0111:
-                Spawn(corner, 270, unit, x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             case 0110: //2wall
-                Spawn(wall, 90, unit, x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, unit, x, y);
                 break;
             case 0011:
-                Spawn(wall, 0, unit, x, y);
+                Spawn(MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             case 0112: //3wall
-                Spawn(tricorner, 90, unit, x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, unit , x, y);
                 break;
             case 0120:
-                Spawn(tricorner, 270, unit, x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, unit, x, y);
                 break;
             case 0012:
-                Spawn(tricorner, 180, unit, x, y);
+                Spawn(MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             case 0122:
-                Spawn(tricorner, 0, unit, x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             case 0101: //4wall
             case 0121:
             case 0123:
-                Spawn(cross, 0, unit, x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             default:
                 Debug.LogWarning("Error reading hash, incorrect h23ash");
