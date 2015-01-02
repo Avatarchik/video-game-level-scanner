@@ -34,11 +34,11 @@ namespace LibraryUnitTest
         [TestMethod]
         public void CombineMaps()
         {
-            var result = ImageTools.CombineMaps(new Tuple<Image<Gray, byte>, Bgr>[]{
-                new Tuple<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine1),new Bgr(0,0,255)),
-                new Tuple<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine2),new Bgr(0,255,0)),
-                new Tuple<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine3),new Bgr(255,0,0)),
-                new Tuple<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine4),new Bgr(0,255,255)),
+            var result = ImageTools.CombineMaps(new KeyValuePair<Image<Gray, byte>, Bgr>[]{
+                new KeyValuePair<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine1),new Bgr(0,0,255)),
+                new KeyValuePair<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine2),new Bgr(0,255,0)),
+                new KeyValuePair<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine3),new Bgr(255,0,0)),
+                new KeyValuePair<Image<Gray, byte>,Bgr>(new Image<Gray,byte>(Properties.Resources.Combine4),new Bgr(0,255,255)),
             });
 
             var expected = Properties.Resources.Combineresult;
@@ -63,7 +63,7 @@ namespace LibraryUnitTest
         public void FilterFromMultipleRanges()
         {
             var img = new Image<Hsv, byte>(Properties.Resources.Combineresult);
-            var ranges = new List<Tuple<Hsv, Hsv>> { rangeYellow };
+            var ranges = new List<KeyValuePair<Hsv, Hsv>> { rangeYellow };
             ranges.AddRange(rangeRed);
 
             var filtered = ImageTools.FilterColor(img, ranges);
@@ -148,13 +148,13 @@ namespace LibraryUnitTest
         private Bgr Turquoise = new Bgr(255, 255, 0);
         private Bgr Black = new Bgr(0, 0, 0);
         private Bgr White = new Bgr(255, 255, 255);
-        private Tuple<Hsv, Hsv>[] rangeRed = new Tuple<Hsv, Hsv>[]{
-                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
-                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+        private KeyValuePair<Hsv, Hsv>[] rangeRed = new KeyValuePair<Hsv, Hsv>[]{
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
                 };
-        private Tuple<Hsv, Hsv> rangeBlue = new Tuple<Hsv, Hsv>(new Hsv(90, 90, 50), new Hsv(120, 255, 255));
-        private Tuple<Hsv, Hsv> rangeGreen = new Tuple<Hsv, Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255));
-        private Tuple<Hsv, Hsv> rangeYellow = new Tuple<Hsv, Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255));
+        private KeyValuePair<Hsv, Hsv> rangeBlue = new KeyValuePair<Hsv, Hsv>(new Hsv(90, 90, 50), new Hsv(120, 255, 255));
+        private KeyValuePair<Hsv, Hsv> rangeGreen = new KeyValuePair<Hsv, Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255));
+        private KeyValuePair<Hsv, Hsv> rangeYellow = new KeyValuePair<Hsv, Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255));
         #endregion
     }
 }

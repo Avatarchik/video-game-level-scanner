@@ -93,12 +93,12 @@ namespace LibraryTestingProgram.ViewModels
             redImg = ImageTools.FilterColor(hsvImg, UserSettings.instance.RedRange);
             greenImg = ImageTools.FilterColor(hsvImg, UserSettings.instance.greenMin, UserSettings.instance.greenMax);
             yellowImg = ImageTools.FilterColor(hsvImg, UserSettings.instance.yellowMin, UserSettings.instance.yellowMax);
-            composedImg = ImageTools.CombineMaps(new List<Tuple<Image<Gray, byte>, Bgr>>
+            composedImg = ImageTools.CombineMaps(new List<KeyValuePair<Image<Gray, byte>, Bgr>>
             {
-                new Tuple<Image<Gray, byte>, Bgr>(blueImg, ImageTools.Colors.Blue),
-                new Tuple<Image<Gray, byte>, Bgr>(redImg, ImageTools.Colors.Red),
-                new Tuple<Image<Gray, byte>, Bgr>(greenImg, ImageTools.Colors.Green),
-                new Tuple<Image<Gray, byte>, Bgr>(yellowImg, ImageTools.Colors.Yellow),
+                new KeyValuePair<Image<Gray, byte>, Bgr>(blueImg, ImageTools.Colors.Blue),
+                new KeyValuePair<Image<Gray, byte>, Bgr>(redImg, ImageTools.Colors.Red),
+                new KeyValuePair<Image<Gray, byte>, Bgr>(greenImg, ImageTools.Colors.Green),
+                new KeyValuePair<Image<Gray, byte>, Bgr>(yellowImg, ImageTools.Colors.Yellow),
 
             });
             

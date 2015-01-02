@@ -33,14 +33,14 @@ namespace ImageRecognitionLibrary
         }
 
         //for many color ranges (needed in case of red)
-        public static Image<Gray, byte> FilterColor(Image<Hsv, Byte> src, IEnumerable<Tuple<Hsv, Hsv>> colors, string debugWindowName = "")
+        public static Image<Gray, byte> FilterColor(Image<Hsv, Byte> src, IEnumerable<KeyValuePair<Hsv, Hsv>> colors, string debugWindowName = "")
         {
             Image<Gray,Byte> result;
             
-            Image<Gray,Byte>[] partialResults = new Image<Gray,byte>[colors.Count<Tuple<Hsv,Hsv>>()];
+            Image<Gray,Byte>[] partialResults = new Image<Gray,byte>[colors.Count<KeyValuePair<Hsv,Hsv>>()];
             int counter = 0;
             foreach (var colorPair in colors){
-                partialResults[counter] = FilterColor(src, colorPair.Item1, colorPair.Item2);
+                partialResults[counter] = FilterColor(src, colorPair.Key, colorPair.Value);
                 counter++;
             }
 
@@ -97,7 +97,7 @@ namespace ImageRecognitionLibrary
         #endregion
         #region Helping methods for finding the Board size
 
-        public static Tuple<int[], int[]> CalculateSums(Image<Gray, byte> image)
+        public static KeyValuePair<int[], int[]> CalculateSums(Image<Gray, byte> image)
         {
             int width = image.Width;
             int height = image.Height;
@@ -115,7 +115,7 @@ namespace ImageRecognitionLibrary
                     }
                 }
             }
-            return new Tuple<int[], int[]>(blackPixelCols, blackPixelRows);
+            return new KeyValuePair<int[], int[]>(blackPixelCols, blackPixelRows);
         }
 
         public static List<Point> ColorRanges(int[] blacks, int size)
@@ -212,14 +212,14 @@ namespace ImageRecognitionLibrary
         }
         #endregion
         #region Combining images
-        public static Image<Bgr, byte> CombineMaps(IEnumerable<Tuple<Image<Gray, byte>, Bgr>> maps)
+        public static Image<Bgr, byte> CombineMaps(IEnumerable<KeyValuePair<Image<Gray, byte>, Bgr>> maps)
         {
-            if (maps.Count<Tuple<Image<Gray,byte>,Bgr>>()==0){
+            if (maps.Count<KeyValuePair<Image<Gray,byte>,Bgr>>()==0){
                 throw new ArgumentException("Cannot combine empty collection of images.");
             }
-            Image<Bgr,byte> result = new Image<Bgr,byte>(maps.First<Tuple<Image<Gray,byte>,Bgr>>().Item1.Size);
+            Image<Bgr,byte> result = new Image<Bgr,byte>(maps.First<KeyValuePair<Image<Gray,byte>,Bgr>>().Key.Size);
             foreach(var map in maps){
-                result.SetValue(map.Item2,map.Item1);
+                result.SetValue(map.Value,map.Key);
             }
             return result;
         }
@@ -249,5 +249,65 @@ namespace ImageRecognitionLibrary
             public static Bgr Black = new Bgr(0, 0, 0);
         }
         #endregion
+
+        #region The most importatnt fuction
+        public static Board ReadFromFrame(Image<Bgr,byte> frame)
+        {
+            Image<Gray, byte>[] filtered = new Image<Gray, byte>[4];
+            DetectionData[] dds = new DetectionData[4];
+            Board board;
+
+            var hsvImg = frame.Convert<Hsv, byte>();
+
+
+
+            Parallel.For(0, 4, i =>
+            {
+                filtered[i] = ImageTools.FilterColor(hsvImg, ranges[i]);
+                dds[i] = ImageTools.DetectSquares(filtered[i]);
+                dds[i].RemoveNoises();
+            });
+
+            dds[0].AddColor(dds[1]);
+            dds[0].AddColor(dds[2]);
+            dds[0].AddColor(dds[3]);
+            board = dds[0].CreateBoard();
+            board.DetectRooms();
+            return board;
+        }
+
+        private static KeyValuePair<Hsv, Hsv>[] blueRange = new KeyValuePair<Hsv, Hsv>[]
+        { 
+            new KeyValuePair<Hsv,Hsv>(new Hsv(90, 90, 90), new Hsv(120, 255, 255))
+        };
+        private static KeyValuePair<Hsv, Hsv>[] redRange = new KeyValuePair<Hsv, Hsv>[]
+        { 
+            new KeyValuePair<Hsv,Hsv>(new Hsv(0,85,80), new Hsv(12,255,255)),
+            new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+        };
+        private static KeyValuePair<Hsv, Hsv>[] greenRange = new KeyValuePair<Hsv, Hsv>[]
+        { 
+            new KeyValuePair<Hsv,Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255))
+        };
+        private static KeyValuePair<Hsv, Hsv>[] yellowRange = new KeyValuePair<Hsv, Hsv>[]
+        { 
+            new KeyValuePair<Hsv,Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255))
+        };
+        private static List<KeyValuePair<Hsv, Hsv>[]> ranges = new List<KeyValuePair<Hsv, Hsv>[]> { blueRange, redRange, greenRange, yellowRange };
+        #endregion
+
+        public static int[,] SampleMatrix = new int[,] 
+        {
+            { 0, 0, 0, 0, 0, 0, 0 }, 
+            { 0, 9, 3, 5, 8, 8, 0 }, 
+            { 0, 9, 1, 1, 1, 1, 0 }, 
+            { 0, 9, 2, 2, 2, 3, 0 }, 
+            { 0, 9, 3, 3, 2, 4, 0 }, 
+            { 0, 9, 11, 11, 10, 10, 0 }, 
+            { 0, 9, 12, 11, 10, 10, 0 }, 
+            { 0, 9, 13, 13, 10, 10, 0 }, 
+            { 0, 9, 9, 9, 9, 9, 0 }, 
+            { 0, 0, 0, 0, 0, 0, 0 } 
+        };
     }
 }

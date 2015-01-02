@@ -28,8 +28,8 @@ namespace LibraryUnitTest
             var sums = ImageTools.CalculateSums(img);
             int[] expectedColumns = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             int[] expectedRows = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ,10 };
-            CollectionAssert.AreEqual(expectedColumns, sums.Item1);
-            CollectionAssert.AreEqual(expectedRows, sums.Item2);
+            CollectionAssert.AreEqual(expectedColumns, sums.Key);
+            CollectionAssert.AreEqual(expectedRows, sums.Value);
         }
 
         [TestMethod]

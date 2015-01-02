@@ -112,13 +112,13 @@ namespace LibraryTestingProgram
         public Hsv GreenMax { get { return greenMax; } set { greenMax = value; } }
         public Hsv YellowMin { get { return yellowMin; } set { yellowMin = value; } }
         public Hsv YellowMax { get { return yellowMax; } set { yellowMax = value; } }
-        public List<Tuple<Hsv, Hsv>> RedRange { 
+        public List<KeyValuePair<Hsv, Hsv>> RedRange { 
             get 
             { 
-                return new List<Tuple<Hsv,Hsv>>
+                return new List<KeyValuePair<Hsv,Hsv>>
                 { 
-                    new Tuple<Hsv,Hsv>(redMin,redMax), 
-                    new Tuple<Hsv,Hsv>(redMin2,redMax2)
+                    new KeyValuePair<Hsv,Hsv>(redMin,redMax), 
+                    new KeyValuePair<Hsv,Hsv>(redMin2,redMax2)
                 };
             } 
         }
