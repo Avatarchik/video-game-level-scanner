@@ -30,7 +30,7 @@ public class MultiWallScript : MonoBehaviour {
 	private Mode right = Mode.Empty;
 	public Mode Right { get { return right; } set { right = value; ChangeVisibility(Side.Right,value); } }
 
-	void Start () {
+	void Awake () {
 		modesMeshes= new Dictionary<Mode, Mesh>(){ {Mode.Empty,emptyMesh} , {Mode.Half,halfMesh}, {Mode.Full,fullMesh}};
    	}
 

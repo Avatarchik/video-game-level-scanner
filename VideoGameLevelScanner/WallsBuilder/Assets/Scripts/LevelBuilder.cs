@@ -1,36 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class LevelBuilder : MonoBehaviour {
+public class LevelBuilder : MonoBehaviour
+{
 
     public Transform floor;
     public Transform multiwall;
-	public int [,] matrix;
+    public int[,] matrix;
     public int unit = 8;
     static Quaternion constQuaternion;
+    private Graph graph = new Graph();
 
-    void Start () {
+    void Start()
+    {
         //example matrix
-		matrix = new int [,] {{0,0,0,0,0,0,0},{0,9,3,5,8,8,0},{0,9,1,1,1,1,0},{0,9,2,2,2,3,0},{0,9,3,3,2,4,0},{0,9,9,9,9,9,0},{0,0,0,0,0,0,0}};
-        Vector3 shift = new Vector3(((matrix.GetLength(0)-2)*unit)/2, 0f, ((matrix.GetLength(1)-2)*unit)/2);
+        matrix = new int[,] { { 0, 0, 0, 0, 0, 0, 0 }, { 0, 9, 3, 5, 8, 8, 0 }, { 0, 9, 1, 1, 1, 1, 0 }, { 0, 9, 2, 2, 2, 3, 0 }, { 0, 9, 3, 3, 2, 4, 0 }, { 0, 9, 9, 9, 9, 9, 0 }, { 0, 0, 0, 0, 0, 0, 0 } };
+        Vector3 shift = new Vector3(((matrix.GetLength(0) - 2) * unit) / 2, 0f, ((matrix.GetLength(1) - 2) * unit) / 2);
         GameObject.Find("LevelCreator").transform.position = shift;
-		for (int x=0; x<(matrix.GetLength(0)-1); x++) {
-			for (int y=0; y<(matrix.GetLength(1)-1); y++) {
-                MatchHash(MakeHash(matrix[x, y], matrix[x + 1, y], matrix[x+1, y+1], matrix[x, y+1]), unit, x, y);
-                if (y < (matrix.GetLength(1) - 2) && x!=0)
+        for (int x = 0; x < (matrix.GetLength(0) - 1); x++)
+        {
+            for (int y = 0; y < (matrix.GetLength(1) - 1); y++)
+            {
+                MatchHash(MakeHash(matrix[x, y], matrix[x + 1, y], matrix[x + 1, y + 1], matrix[x, y + 1]), unit, x, y);
+                if (y < (matrix.GetLength(1) - 2) && x != 0)
                 {
                     var t = (Transform)Instantiate(floor, new Vector3(x * unit, 0, y * unit), Quaternion.identity);
                     t.rotation = floor.rotation;
                     t.parent = this.transform;
                 }
-			}
-		}
-	}
-	
+            }
+        }
+        //Graph.ForEach(item => Debug.Log(item[0] + "," + item[1]));
+        var k = graph.Kruskal();
+        k.ForEach(edge => Debug.Log(edge.U + "," + edge.V));
+
+    }
 
 
-	void Update () {	
-	}
+
+    void Update()
+    {
+    }
 
     void Spawn(MultiWallScript.Mode topMode, MultiWallScript.Mode leftMode, MultiWallScript.Mode bottomMode, MultiWallScript.Mode rightMode, int unit, int x, int y)
     {
@@ -43,13 +54,26 @@ public class LevelBuilder : MonoBehaviour {
         obj.transform.parent = GameObject.Find("LevelCreator").transform;
     }
 
+    void AddEdgesToGraph(int[] rooms, int i)
+    {
+        Edge edge;
+        if (rooms[i] != 0 && rooms[i - 1] != 0 && rooms[i - 1] != rooms[i])
+        {
+            edge = new Edge(rooms[i - 1], rooms[i]);
+            if (!graph.Edges.Exists(e => e.Equals(edge)))
+                graph.Edges.Add(edge);
+        }
+    }
+
     //function that generates a unique hash, given 4 cells of a room-matrix
-	int MakeHash(int a, int b, int c, int d) {
-		int hash = 0;
-		int [] rooms = new int[] {a, b, c, d};
-		int [] dict = new int[] {a, -1, -1, -1};
-		for (int i = 1; i < rooms.Length; i++) {
-			int j = 0;
+    int MakeHash(int a, int b, int c, int d)
+    {
+        int hash = 0;
+        int[] rooms = new int[] { a, b, c, d };
+        int[] dict = new int[] { a, -1, -1, -1 };
+        for (int i = 1; i < rooms.Length; i++)
+        {
+            int j = 0;
             while (j < 4 && (dict[j] != -1 || dict[j] != rooms[i]))
             {
                 if (dict[j] == -1)
@@ -65,10 +89,10 @@ public class LevelBuilder : MonoBehaviour {
                 }
                 j++;
             }
-
+            AddEdgesToGraph(rooms, i);
         }
-		return hash;		
-	}
+        return hash;
+    }
     //function that matches a hash with the correct part of a wall and displays it
     void MatchHash(int hash, int unit, int x, int y)
     {
@@ -95,7 +119,7 @@ public class LevelBuilder : MonoBehaviour {
                 Spawn(MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             case 0112: //3wall
-                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, unit , x, y);
+                Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, unit, x, y);
                 break;
             case 0120:
                 Spawn(MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, unit, x, y);
@@ -116,6 +140,4 @@ public class LevelBuilder : MonoBehaviour {
                 break;
         }
     }
-
-
 }
