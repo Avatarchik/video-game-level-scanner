@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using Emgu.CV;
 using Emgu.CV.UI;
@@ -16,7 +15,7 @@ namespace ImageRecognitionLibrary
         #region Displaying Images
         public static void ShowInNamedWindow(Emgu.CV.IImage result, string debugWindowName)
         {
-            if (!String.IsNullOrWhiteSpace(debugWindowName))
+            if (!(debugWindowName.Equals ("") || debugWindowName == null))
             {
                 CvInvoke.cvNamedWindow(debugWindowName);
                 CvInvoke.cvShowImage(debugWindowName, result.Ptr);
@@ -193,7 +192,8 @@ namespace ImageRecognitionLibrary
             {
                 for (int y = 0; y < boardWidth; ++y)
                 {
-                    img[x, y] = palette[data[x, y]];
+                    int colorIndex = (data[x, y] >=0) ? data[x,y] : 0;
+                    img[x, y] = palette[colorIndex];
                 }
             }
             return img.Resize(maxWidth,maxHeight,Emgu.CV.CvEnum.INTER.CV_INTER_NN);
@@ -261,12 +261,12 @@ namespace ImageRecognitionLibrary
 
 
 
-            Parallel.For(0, 4, i =>
+			for(int i= 0; i < 4; i++)
             {
                 filtered[i] = ImageTools.FilterColor(hsvImg, ranges[i]);
                 dds[i] = ImageTools.DetectSquares(filtered[i]);
                 dds[i].RemoveNoises();
-            });
+            };
 
             dds[0].AddColor(dds[1]);
             dds[0].AddColor(dds[2]);
@@ -296,18 +296,6 @@ namespace ImageRecognitionLibrary
         private static List<KeyValuePair<Hsv, Hsv>[]> ranges = new List<KeyValuePair<Hsv, Hsv>[]> { blueRange, redRange, greenRange, yellowRange };
         #endregion
 
-        public static int[,] SampleMatrix = new int[,] 
-        {
-            { 0, 0, 0, 0, 0, 0, 0 }, 
-            { 0, 9, 3, 5, 8, 8, 0 }, 
-            { 0, 9, 1, 1, 1, 1, 0 }, 
-            { 0, 9, 2, 2, 2, 3, 0 }, 
-            { 0, 9, 3, 3, 2, 4, 0 }, 
-            { 0, 9, 11, 11, 10, 10, 0 }, 
-            { 0, 9, 12, 11, 10, 10, 0 }, 
-            { 0, 9, 13, 13, 10, 10, 0 }, 
-            { 0, 9, 9, 9, 9, 9, 0 }, 
-            { 0, 0, 0, 0, 0, 0, 0 } 
-        };
+        
     }
 }
