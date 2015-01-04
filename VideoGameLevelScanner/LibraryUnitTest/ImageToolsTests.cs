@@ -74,7 +74,23 @@ namespace LibraryUnitTest
             Assert.IsTrue(CompareBitmaps(expected, actual));
         }
         #region DetectionImages
-        
+        [TestMethod]
+        public void RandomPalette()
+        {
+            var expected = new Bgr[6] {
+                new Bgr(0,0,0),
+                new Bgr(0,213,255),
+                new Bgr(0,255,85),
+                new Bgr(128,255,0),
+                new Bgr(255,170,0),
+                new Bgr(255,0,43)
+            };
+
+            var actual = ImageTools.GetRandomPalette(6);
+
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
         [TestMethod]
         public void PaintColors()
         {

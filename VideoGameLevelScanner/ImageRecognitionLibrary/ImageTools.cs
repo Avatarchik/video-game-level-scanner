@@ -199,14 +199,21 @@ namespace ImageRecognitionLibrary
             return img.Resize(maxWidth,maxHeight,Emgu.CV.CvEnum.INTER.CV_INTER_NN);
         }
 
-        private static Bgr[] GetRandomPalette(int paletteSize)
+        public static Bgr[] GetRandomPalette(int paletteSize)
         {
-            Random rand = new Random();
+            Image<Hsv,byte> hsvPalette = new Image<Hsv,byte>(paletteSize,1);
+            Image<Bgr,byte> bgrPalette;
             Bgr[] palette = new Bgr[paletteSize];
-            palette[0] = Colors.Black;
+            for (int i = 0; i < paletteSize; ++i)
+            {
+                int x = i*25;
+                hsvPalette[0,i] = new Hsv(x % 180, 255*(1-(x/900*0.25)) ,255);
+            }
+            bgrPalette = hsvPalette.Convert<Bgr, byte>();
+            palette[0] = new Bgr(0, 0, 0);
             for (int i = 1; i < paletteSize; ++i)
             {
-                palette[i] = new Bgr(rand.Next() % 256, rand.Next() % 256, rand.Next() % 256);
+                palette[i] = bgrPalette[0,i];
             }
             return palette;
         }
