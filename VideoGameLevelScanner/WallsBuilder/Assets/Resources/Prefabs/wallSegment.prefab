@@ -95,7 +95,7 @@ GameObject:
   - 4: {fileID: 400018}
   - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: element
+  m_Name: wallSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

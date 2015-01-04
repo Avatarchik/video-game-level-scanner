@@ -39,17 +39,4 @@ public class MultiWallScript : MonoBehaviour {
 		MeshFilter meshFilter = this.transform.FindChild(SidesNames [(int)side]).GetComponent<MeshFilter>();
 		meshFilter.mesh = modesMeshes [mode];
     }
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetKeyDown(KeyCode.UpArrow))
-			Top = Mode.Full;
-		if (Input.GetKeyDown(KeyCode.DownArrow))
-			Bottom = Mode.Half;
-		if (Input.GetKeyDown(KeyCode.RightArrow))
-			Right = Mode.Full;
-		if (Input.GetKeyDown(KeyCode.LeftArrow))
-			Left = Mode.Full;
-	}
-
 }

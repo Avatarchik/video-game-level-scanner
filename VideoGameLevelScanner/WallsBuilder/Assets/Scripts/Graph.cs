@@ -12,6 +12,8 @@ public class Graph {
         int uIndex = 0;
         int vIndex = 0;
         //TODO Randomize Edges
+        var rand = new System.Random();
+        Edges = Edges.OrderBy(edge =>  rand.Next()).ToList();
         foreach (var edge in Edges)
         {
             var indexes = FindSubTreesIndexes(forest, edge);

@@ -159,8 +159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e540ac156ad6c4b9e48b2bfb50ec55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floor: {fileID: 400000, guid: 915ab502df0a2534383fcb1b7b9bce4a, type: 3}
-  multiwall: {fileID: 400018, guid: c0e31f886959fc74e83a7701f2fece49, type: 2}
   unit: 8
 --- !u!4 &832154519
 Transform:
@@ -477,7 +475,7 @@ GameObject:
   - 4: {fileID: 1534593545}
   - 114: {fileID: 1534593546}
   m_Layer: 0
-  m_Name: element
+  m_Name: wallSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
