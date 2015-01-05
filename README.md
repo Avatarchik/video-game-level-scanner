@@ -1,4 +1,5 @@
-﻿WAŻNE! Aby edytować projekt w Unity należy pobrać paczkę z bibliotekami Emmgu CV 
+﻿#WAŻNE! Aby edytować projekt w Unity należy pobrać paczkę z bibliotekami Emmgu CV 
+https://www.dropbox.com/s/v3ekj4db02fdxn9/EMGUCV.unitypackage?dl=0
 
 # Create README.md file for Video Game Level Scanner
 
