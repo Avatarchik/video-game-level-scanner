@@ -101,11 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e540ac156ad6c4b9e48b2bfb50ec55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wall: {fileID: 400000, guid: e7635fac243c41e46aae2a6944b4bf5c, type: 2}
-  corner: {fileID: 400000, guid: 8aafc3e4da7bab543b052cc697e88c4c, type: 2}
-  tricorner: {fileID: 400000, guid: 393d866831e6ec84cbeafb609937315f, type: 2}
-  cross: {fileID: 400000, guid: ea47e15ebd576224ca057d7cf634f1d7, type: 2}
-  floor: {fileID: 400000, guid: 915ab502df0a2534383fcb1b7b9bce4a, type: 3}
   unit: 8
 --- !u!4 &832154519
 Transform:
@@ -114,7 +109,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 832154517}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -.203164577}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -177,7 +172,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: -100
   far clip plane: 1000
   field of view: 60
   orthographic: 1
