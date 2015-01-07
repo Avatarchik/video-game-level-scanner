@@ -63,6 +63,16 @@ namespace LibraryUnitTest.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap BoardSample {
+            get {
+                object obj = ResourceManager.GetObject("BoardSample", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ColumnRowSums {
             get {
                 object obj = ResourceManager.GetObject("ColumnRowSums", resourceCulture);
