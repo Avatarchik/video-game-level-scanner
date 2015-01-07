@@ -50,6 +50,10 @@ public class LevelBuilder : MonoBehaviour
                     wall.gameObject.transform.parent = this.transform;
                 //Debug.Log("Putting into array wall in " + x + "," + y + ".");
                 walls[x, y] = wall;
+                AddWallToRoom(x, y, wall);
+                AddWallToRoom(x+1, y, wall);
+                AddWallToRoom(x, y+1, wall);
+                AddWallToRoom(x+1, y+1, wall);
             }
         }
         for (int x = 1; x < (matrix.GetLength(0) - 1); x++) 
@@ -87,6 +91,12 @@ public class LevelBuilder : MonoBehaviour
         
     }
 
+    private void AddWallToRoom(int x, int y, Wall wall)
+    {
+        if (x>=0 && y>=0 && matrix[x,y]!=null && matrix[x, y] > 0)
+            Rooms[matrix[x, y]-1].Walls.Add(wall);
+    }
+    
 
 
     void Update()
