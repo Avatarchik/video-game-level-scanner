@@ -38,7 +38,7 @@ public class LevelBuilder : MonoBehaviour
         {
             Rooms[i] = new Room(i+1);
         }
-        Vector3 shift = new Vector3(((matrix.GetLength(0) - 2) * unit) / 2, 0f, ((matrix.GetLength(1) - 2) * unit) / 2);
+        Vector3 shift = new Vector3(((matrix.GetLength(1) - 2) * unit) / 2, 0f, ((matrix.GetLength(0) - 2) * -unit) / 2);
         GameObject.Find("LevelCreator").transform.position = shift;
         for (int x = 0; x < (matrix.GetLength(0) - 1); x++)
         {
@@ -77,7 +77,7 @@ public class LevelBuilder : MonoBehaviour
             Debug.Log(room.ToString());
         }
         //Graph.ForEach(item => Debug.Log(item[0] + "," + item[1]));
-        var k = graph.Kruskal();
+        //var k = graph.Kruskal();
         //k.ForEach(edge => Debug.Log(edge.U + "," + edge.V));
         var roomsWithDoors = graph.Kruskal();
         foreach (var edge in roomsWithDoors)
@@ -170,34 +170,34 @@ public class LevelBuilder : MonoBehaviour
                 wall = null;
                 break;
             case 0100: //corner
-                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full);
-                break;
-            case 0010:
                 wall = new Wall(x, y, unit, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full);
                 break;
-            case 0001:
+            case 0010:
                 wall = new Wall(x, y, unit, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty);
                 break;
-            case 0111:
+            case 0001:
                 wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Empty);
                 break;
-            case 0110: //2wall
-                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty);
+            case 0111:
+                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full);
                 break;
-            case 0011:
+            case 0110: //2wall
                 wall = new Wall(x, y, unit, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full);
                 break;
+            case 0011:
+                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty);
+                break;
             case 0112: //3wall
-                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty);
+                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full);
                 break;
             case 0120:
-                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full);
-                break;
-            case 0012:
                 wall = new Wall(x, y, unit, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full);
                 break;
+            case 0012:
+                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty);
+                break;
             case 0122:
-                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full);
+                wall = new Wall(x, y, unit, MultiWallScript.Mode.Full, MultiWallScript.Mode.Empty, MultiWallScript.Mode.Full, MultiWallScript.Mode.Full);
                 break;
             case 0101: //4wall
             case 0121:

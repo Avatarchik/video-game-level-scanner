@@ -38,6 +38,7 @@ public class Graph {
             {
                 forest[uIndex].AddRange(forest[vIndex]);
                 forest.RemoveAt(vIndex);
+                kruskal.Add(edge);
             }
         }
         return kruskal;

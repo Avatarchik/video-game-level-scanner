@@ -14,7 +14,7 @@ public class Wall {
         Y = y;
         Unit = unit;
         var instance = Resources.Load("Prefabs/wallSegment") as GameObject; 
-        gameObject = (GameObject)Object.Instantiate(instance, new Vector3(x * unit, 0, y * unit), Quaternion.identity);
+        gameObject = (GameObject)Object.Instantiate(instance, new Vector3(y * unit, 0, -x * unit), Quaternion.identity);
         gameObject.transform.rotation = instance.transform.rotation;
 
         sides = gameObject.GetComponent<MultiWallScript>();
@@ -27,62 +27,35 @@ public class Wall {
     public static void ChangeToDoor(Wall a, Wall b) 
     {
         //right and left mode to modify
-        if (a.X == b.X) 
+        if (a.X == b.X)
+        {
+            if (a.Y < b.Y)
+            {
+                a.sides.Right = MultiWallScript.Mode.Half;
+                b.sides.Left = MultiWallScript.Mode.Half;
+            }
+            else
+            {
+                a.sides.Left = MultiWallScript.Mode.Half;
+                b.sides.Right = MultiWallScript.Mode.Half;
+            }
+        }
+        //top and bottom mode to modify
+        else if (a.Y == b.Y)
         {
             if (a.X < b.X)
+            {
+                a.sides.Bottom = MultiWallScript.Mode.Half;
+                b.sides.Top = MultiWallScript.Mode.Half;
+            }
+            else
             {
                 a.sides.Top = MultiWallScript.Mode.Half;
                 b.sides.Bottom = MultiWallScript.Mode.Half;
             }
-            else 
-            { 
-                a.sides.Bottom = MultiWallScript.Mode.Half; 
-                b.sides.Top = MultiWallScript.Mode.Half; 
-            }
         }
-        //top and bottom mode to modify
-        else if (a.Y == b.Y) 
-        {
-            if (a.Y < b.Y) 
-            { 
-                a.sides.Right = MultiWallScript.Mode.Half; 
-                b.sides.Left = MultiWallScript.Mode.Half; 
-            }
-            else { 
-                a.sides.Left = MultiWallScript.Mode.Half; 
-                b.sides.Right = MultiWallScript.Mode.Half; 
-            }
-        } 
-        else 
+        else
             throw new System.ArgumentException("Inproper coordinates of the walls");
-
-        //if (a.X == b.X)
-        //{
-        //    if (a.Y < b.Y) 
-        //    {
-        //        a.sides.Right = MultiWallScript.Mode.Half; 
-        //        b.sides.Left = MultiWallScript.Mode.Half;
-        //    }
-        //    else 
-        //    {
-        //        a.sides.Left = MultiWallScript.Mode.Half; 
-        //        b.sides.Right = MultiWallScript.Mode.Half;
-        //    }
-        //}
-        //else if (a.Y == b.Y)
-        //{
-        //    if (a.X < b.X) {
-        //        a.sides.Bottom = MultiWallScript.Mode.Half; 
-        //        b.sides.Top = MultiWallScript.Mode.Half;
-        //    }
-        //    else 
-        //    {
-        //        a.sides.Top = MultiWallScript.Mode.Half; 
-        //        b.sides.Bottom = MultiWallScript.Mode.Half;
-        //    }
-        //}
-        //else
-        //    throw new System.ArgumentException("Inproper coordinates of the walls");
     }
 
     public bool IsNextTo(Wall otherWall)

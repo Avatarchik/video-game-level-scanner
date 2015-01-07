@@ -1,17 +1,54 @@
 fileFormatVersion: 2
-guid: 77d0043c39fa6494c857a47ff0d59ea8
+guid: f12cd523c1b5cee4ba306287bebe7083
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cube
+    100000: EmptyWall
+    100002: FullWallF
+    100004: FullWallL
+    100006: FullWallR
+    100008: HalfWallF
+    100010: HalfWallL
+    100012: HalfWallR
+    100014: Middle
+    100016: //RootNode
+    400000: EmptyWall
+    400002: FullWallF
+    400004: FullWallL
+    400006: FullWallR
+    400008: HalfWallF
+    400010: HalfWallL
+    400012: HalfWallR
+    400014: Middle
+    400016: //RootNode
+    2300000: EmptyWall
+    2300002: FullWallF
+    2300004: FullWallL
+    2300006: FullWallR
+    2300008: HalfWallF
+    2300010: HalfWallL
+    2300012: HalfWallR
+    2300014: Middle
+    3300000: EmptyWall
+    3300002: FullWallF
+    3300004: FullWallL
+    3300006: FullWallR
+    3300008: HalfWallF
+    3300010: HalfWallL
+    3300012: HalfWallR
+    3300014: Middle
+    4300000: FullWallR
+    4300002: Middle
+    4300004: FullWallF
+    4300006: EmptyWall
+    4300008: FullWallL
+    4300010: HalfWallF
+    4300012: HalfWallR
+    4300014: HalfWallL
     7400000: Default Take
     9500000: //RootNode
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
@@ -47,7 +84,7 @@ ModelImporter:
     splitTangentsAcrossUV: 1
     normalImportMode: 0
     tangentImportMode: 1
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     human: []

@@ -14,7 +14,7 @@ public class Floor
         Y = y;
         Unit = unit;
         var instance = Resources.Load("Prefabs/floor") as GameObject;
-        gameObject = (GameObject)Object.Instantiate(instance, new Vector3(x * unit, 0, y * unit), Quaternion.identity);
+        gameObject = (GameObject)Object.Instantiate(instance, new Vector3(y * unit, 0, -x * unit), Quaternion.identity);
         gameObject.transform.rotation = instance.transform.rotation;
     }
 
