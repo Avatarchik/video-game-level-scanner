@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 
 namespace ImageRecognitionLibrary
@@ -61,14 +60,14 @@ namespace ImageRecognitionLibrary
                 return tab;
             } 
         }
-        public int GetCell(uint x, uint y)
-        {
-            return grid[width * (x - 1) + (y - 1)];
-        }
-        public void SetCell(uint x, uint y, int value)
-        {
-            grid[width * (x - 1) + (y - 1)] = value;
-        }
+        //public int GetCell(uint x, uint y)
+        //{
+        //    return grid[width * (x - 1) + (y - 1)];
+        //}
+        //public void SetCell(uint x, uint y, int value)
+        //{
+        //    grid[width * (x - 1) + (y - 1)] = value;
+        //}
         
         public int this[int x, int y]{
             get { return grid[width * x + y]; }

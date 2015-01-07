@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 
 using Emgu.CV;
 using Emgu.CV.Structure;
-using Emgu.CV.UI;
 
-using RectangleExtension;
 
 namespace ImageRecognitionLibrary
 {
@@ -67,8 +64,8 @@ namespace ImageRecognitionLibrary
 
             var sums = ImageTools.CalculateSums(fullDetection);
 
-            List<Point> ColsRanges = ImageTools.ColorRanges(sums.Item1, width);
-            List<Point> RowsRanges = ImageTools.ColorRanges(sums.Item2, height);
+            List<Point> ColsRanges = ImageTools.ColorRanges(sums.Key, width);
+            List<Point> RowsRanges = ImageTools.ColorRanges(sums.Value, height);
 
             int sizeY = ColsRanges.Count();
             int sizeX = RowsRanges.Count();

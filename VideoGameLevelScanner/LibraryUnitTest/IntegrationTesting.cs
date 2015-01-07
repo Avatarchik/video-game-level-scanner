@@ -21,12 +21,12 @@ namespace LibraryUnitTest
             
             var hsvImg = frame.Convert<Hsv, byte>();
 
-            Parallel.For(0, 4, i =>
+            for(int i =0; i <4 ; ++i)
             {
                 filtered[i] = ImageTools.FilterColor(hsvImg, ranges[i]);
                 dds[i] = ImageTools.DetectSquares(filtered[i]);
                 dds[i].RemoveNoises();
-            });
+            };
 
             dds[0].AddColor(dds[1]);
             dds[0].AddColor(dds[2]);
@@ -36,24 +36,24 @@ namespace LibraryUnitTest
             var img = ImageTools.DrawRooms(640, 480, board.Grid);
         }
 
-        private static Tuple<Hsv, Hsv>[] blueRange = new Tuple<Hsv, Hsv>[]
+        private static KeyValuePair<Hsv, Hsv>[] blueRange = new KeyValuePair<Hsv, Hsv>[]
         { 
-            new Tuple<Hsv,Hsv>(new Hsv(90, 90, 90), new Hsv(120, 255, 255))
+            new KeyValuePair<Hsv,Hsv>(new Hsv(90, 90, 90), new Hsv(120, 255, 255))
         };
-        private static Tuple<Hsv, Hsv>[] redRange = new Tuple<Hsv, Hsv>[]
+        private static KeyValuePair<Hsv, Hsv>[] redRange = new KeyValuePair<Hsv, Hsv>[]
         { 
-            new Tuple<Hsv,Hsv>(new Hsv(0,85,80), new Hsv(12,255,255)),
-            new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+            new KeyValuePair<Hsv,Hsv>(new Hsv(0,85,80), new Hsv(12,255,255)),
+            new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
         };
-        private static Tuple<Hsv, Hsv>[] greenRange = new Tuple<Hsv, Hsv>[]
+        private static KeyValuePair<Hsv, Hsv>[] greenRange = new KeyValuePair<Hsv, Hsv>[]
         { 
-            new Tuple<Hsv,Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255))
+            new KeyValuePair<Hsv,Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255))
         };
-        private static Tuple<Hsv, Hsv>[] yellowRange = new Tuple<Hsv, Hsv>[]
+        private static KeyValuePair<Hsv, Hsv>[] yellowRange = new KeyValuePair<Hsv, Hsv>[]
         { 
-            new Tuple<Hsv,Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255))
+            new KeyValuePair<Hsv,Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255))
         };
-        private List<Tuple<Hsv, Hsv>[]> ranges = new List<Tuple<Hsv, Hsv>[]>{ blueRange, redRange, greenRange, yellowRange };
+        private List<KeyValuePair<Hsv, Hsv>[]> ranges = new List<KeyValuePair<Hsv, Hsv>[]>{ blueRange, redRange, greenRange, yellowRange };
 
 
     }

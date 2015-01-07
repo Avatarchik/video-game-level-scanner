@@ -1,4 +1,5 @@
 ﻿using Emgu.CV.Structure;
+using ImageRecognitionLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,21 @@ using System.Text;
 
 namespace LibraryTestingProgram
 {
-    public class UserSettings
+    public class UserSettings : IFilteringParameters
     {
         public static readonly UserSettings instance = new UserSettings();
-
+        public IFilteringParameters Instance { get { return instance as IFilteringParameters; } }
         private UserSettings()
+        {
+            ReadValuesFromSettings();
+        }
+
+        public void ResetValues()
+        {
+            ReadValuesFromSettings();
+        }
+
+        private void ReadValuesFromSettings()
         {
             blueMin = ParseSettingToColor(Properties.Settings.Default.blueMin);
             blueMax = ParseSettingToColor(Properties.Settings.Default.blueMax);
@@ -23,7 +34,7 @@ namespace LibraryTestingProgram
             yellowMin = ParseSettingToColor(Properties.Settings.Default.yellowMin);
             yellowMax = ParseSettingToColor(Properties.Settings.Default.yellowMax);
         }
-        
+
         private string HsvToString(Hsv color)
         {
             return (int)color.Hue + "," + (int)color.Satuation + "," + (int)color.Value;
@@ -112,13 +123,15 @@ namespace LibraryTestingProgram
         public Hsv GreenMax { get { return greenMax; } set { greenMax = value; } }
         public Hsv YellowMin { get { return yellowMin; } set { yellowMin = value; } }
         public Hsv YellowMax { get { return yellowMax; } set { yellowMax = value; } }
-        public List<Tuple<Hsv, Hsv>> RedRange { 
+        
+        public List<KeyValuePair<Hsv, Hsv>> RedRange 
+        { 
             get 
             { 
-                return new List<Tuple<Hsv,Hsv>>
+                return new List<KeyValuePair<Hsv,Hsv>>
                 { 
-                    new Tuple<Hsv,Hsv>(redMin,redMax), 
-                    new Tuple<Hsv,Hsv>(redMin2,redMax2)
+                    new KeyValuePair<Hsv,Hsv>(redMin,redMax), 
+                    new KeyValuePair<Hsv,Hsv>(redMin2,redMax2)
                 };
             } 
         }

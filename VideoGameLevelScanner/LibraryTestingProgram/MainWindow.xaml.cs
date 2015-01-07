@@ -85,17 +85,17 @@ namespace LibraryTestingProgram
             Image<Gray, byte> yellow = ImageTools.FilterColor(img, new Hsv(10, 70, 127), new Hsv(35, 255, 255), debugMode ? "Yellow Debug Window" : "");
             Image<Gray, byte> red = ImageTools.FilterColor(
                 img,
-                new Tuple<Hsv, Hsv>[]{
-                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
-                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+                new KeyValuePair<Hsv, Hsv>[]{
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
                 },
                 debugMode ? "Red Debug Window" : ""
             );
-            var colorDetection = ImageTools.CombineMaps(new List<Tuple<Image<Gray, byte>, Bgr>> {
-                new Tuple<Image<Gray,byte>,Bgr>(blue, ImageTools.Colors.Blue),
-                new Tuple<Image<Gray,byte>,Bgr>(red, ImageTools.Colors.Red),
-                new Tuple<Image<Gray,byte>,Bgr>(green, ImageTools.Colors.Green),
-                new Tuple<Image<Gray,byte>,Bgr>(yellow, ImageTools.Colors.Yellow),
+            var colorDetection = ImageTools.CombineMaps(new List<KeyValuePair<Image<Gray, byte>, Bgr>> {
+                new KeyValuePair<Image<Gray,byte>,Bgr>(blue, ImageTools.Colors.Blue),
+                new KeyValuePair<Image<Gray,byte>,Bgr>(red, ImageTools.Colors.Red),
+                new KeyValuePair<Image<Gray,byte>,Bgr>(green, ImageTools.Colors.Green),
+                new KeyValuePair<Image<Gray,byte>,Bgr>(yellow, ImageTools.Colors.Yellow),
             });
             return colorDetection;
         }
@@ -109,9 +109,9 @@ namespace LibraryTestingProgram
             Image<Gray, byte> yellow = ImageTools.FilterColor(img, new Hsv(10, 70, 127), new Hsv(35, 255, 255));
             Image<Gray, byte> red = ImageTools.FilterColor(
                 img,
-                new Tuple<Hsv, Hsv>[]{
-                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
-                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+                new KeyValuePair<Hsv, Hsv>[]{
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
                 }                
             );
 
@@ -150,9 +150,9 @@ namespace LibraryTestingProgram
             Image<Gray, byte> yellow = ImageTools.FilterColor(img, new Hsv(10, 70, 127), new Hsv(35, 255, 255));
             Image<Gray, byte> red = ImageTools.FilterColor(
                 img,
-                new Tuple<Hsv, Hsv>[]{
-                    new Tuple<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
-                    new Tuple<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+                new KeyValuePair<Hsv, Hsv>[]{
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
                 }
             );
 
