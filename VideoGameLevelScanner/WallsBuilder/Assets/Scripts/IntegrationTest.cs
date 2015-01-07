@@ -2,7 +2,6 @@
 using System.Collections;
 using Emgu.CV;
 using Emgu.CV.Util;
-using Emgu.CV.UI;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System.Runtime.InteropServices;
@@ -35,16 +34,15 @@ public class IntegrationTest : MonoBehaviour {
 			Image<Bgr, byte> frame = capture.QueryFrame ();
 			Debug.Log ("Board");
 			board = ImageTools.ReadFromFrame (frame);
-			for (int x = 0; x < board.Height; ++x)
-					for (int y =0; y< board.Width; ++y) {
-							Debug.Log ("[" + x + "," + y + "] = " + board.Grid [x, y]);
-					}
-			var img = ImageTools.DrawRooms (500, 500, board.Grid);
+
+			var img = ImageTools.DrawRooms (320,240, board.Grid);
 
 			cameraTex = TextureConvert.ImageToTexture2D<Bgr,byte> (frame, true);
-			lookupTex = TextureConvert.ImageToTexture2D<Bgr,byte> (img, true);
-			GameObject.Find ("Lookup").GetComponent<UnityEngine.UI.Image> ().sprite = Sprite.Create (lookupTex, new Rect (0, 0, lookupTex.width, lookupTex.height), new Vector2 (0.5f, 0.5f));
 			GameObject.Find ("CameraImage").GetComponent<UnityEngine.UI.Image> ().sprite = Sprite.Create (cameraTex, new Rect (0, 0, cameraTex.width, cameraTex.height), new Vector2 (0.5f, 0.5f));
+			if(img != null){
+				lookupTex = TextureConvert.ImageToTexture2D<Bgr,byte> (img, true);
+				GameObject.Find ("Lookup").GetComponent<UnityEngine.UI.Image> ().sprite = Sprite.Create (lookupTex, new Rect (0, 0, lookupTex.width, lookupTex.height), new Vector2 (0.5f, 0.5f));
+			}
 		}
     }
 

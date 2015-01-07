@@ -2,10 +2,8 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Emgu.CV;
-using Emgu.CV.UI;
 using Emgu.CV.Structure;
 namespace ImageRecognitionLibrary
 {
@@ -187,6 +185,7 @@ namespace ImageRecognitionLibrary
         {
             int boardHeight = data.GetLength(0);
             int boardWidth = data.GetLength(1);
+            int imgScale = Math.Min(maxWidth / boardWidth, maxHeight / boardHeight);
             Image<Bgr, byte> img = new Image<Bgr, byte>(boardWidth, boardHeight);
             for (int x = 0; x < boardHeight; ++x)
             {
@@ -196,7 +195,7 @@ namespace ImageRecognitionLibrary
                     img[x, y] = palette[colorIndex];
                 }
             }
-            return img.Resize(maxWidth,maxHeight,Emgu.CV.CvEnum.INTER.CV_INTER_NN);
+            return img.Resize(imgScale,Emgu.CV.CvEnum.INTER.CV_INTER_NN);
         }
 
         public static Bgr[] GetRandomPalette(int paletteSize)
@@ -265,10 +264,8 @@ namespace ImageRecognitionLibrary
             Board board;
 
             var hsvImg = frame.Convert<Hsv, byte>();
-
-
-
-			for(int i= 0; i < 4; i++)
+            
+            for(int i= 0; i < 4; i++)
             {
                 filtered[i] = ImageTools.FilterColor(hsvImg, ranges[i]);
                 dds[i] = ImageTools.DetectSquares(filtered[i]);

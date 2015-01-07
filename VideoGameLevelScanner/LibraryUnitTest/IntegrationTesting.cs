@@ -21,12 +21,12 @@ namespace LibraryUnitTest
             
             var hsvImg = frame.Convert<Hsv, byte>();
 
-            Parallel.For(0, 4, i =>
+            for(int i =0; i <4 ; ++i)
             {
                 filtered[i] = ImageTools.FilterColor(hsvImg, ranges[i]);
                 dds[i] = ImageTools.DetectSquares(filtered[i]);
                 dds[i].RemoveNoises();
-            });
+            };
 
             dds[0].AddColor(dds[1]);
             dds[0].AddColor(dds[2]);
