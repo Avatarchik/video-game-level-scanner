@@ -1,5 +1,12 @@
-﻿#WAŻNE! Aby edytować projekt w Unity należy pobrać paczkę z bibliotekami Emmgu CV 
-https://www.dropbox.com/s/v3ekj4db02fdxn9/EMGUCV.unitypackage?dl=0
+﻿#WAŻNE! Aby edytować projekt w Unity należy pobrać toola do instalowania Emgu dla Unity
+W configu należy podać ścieżkę do folderu Emgu (folderu wersji) i ścieżkę do folderu Editor w folderze Unity.
+Uruchaminie toola
+UnityBuildTool.exe [install/project] {ścieżka do projektu} {x86,x64}
+- opcja install doda niezbędne pliki w katalogu Unity (trzeba to zrobić tylko raz)
+- opcja project przekopiuje wszystkie niezbędne pliki do katalogu projektu (trzeba to robić co projekt)
+Ścieżka do projektu jest ścieżką do głównego folderu projektu, NIE folderu Assets!
+Po tym wszystkim należy w ustawieniach player'a ustawić Api Compatibility level  na .NET 2.0 (bez Subset w nazwie).
+
 
 # Create README.md file for Video Game Level Scanner
 
