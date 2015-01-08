@@ -259,15 +259,21 @@ namespace ImageRecognitionLibrary
         #region The most importatnt fuction
         public static Board ReadFromFrame(Image<Bgr,byte> frame)
         {
+            Board board = ReadFromFrame(frame, new FilteringParameters(null));
+            return board;
+        }
+
+        public static Board ReadFromFrame(Image<Bgr, byte> frame, FilteringParameters filteringParameters)
+        {
             Image<Gray, byte>[] filtered = new Image<Gray, byte>[4];
             DetectionData[] dds = new DetectionData[4];
             Board board;
 
             var hsvImg = frame.Convert<Hsv, byte>();
-            
-            for(int i= 0; i < 4; i++)
+
+            for (int i = 0; i < 4; i++)
             {
-                filtered[i] = ImageTools.FilterColor(hsvImg, ranges[i]);
+                filtered[i] = ImageTools.FilterColor(hsvImg, filteringParameters.ColorsRanges[i]);
                 dds[i] = ImageTools.DetectSquares(filtered[i]);
                 dds[i].RemoveNoises();
             };
@@ -278,28 +284,7 @@ namespace ImageRecognitionLibrary
             board = dds[0].CreateBoard();
             board.DetectRooms();
             return board;
-        }
-
-        private static KeyValuePair<Hsv, Hsv>[] blueRange = new KeyValuePair<Hsv, Hsv>[]
-        { 
-            new KeyValuePair<Hsv,Hsv>(new Hsv(90, 90, 90), new Hsv(120, 255, 255))
-        };
-        private static KeyValuePair<Hsv, Hsv>[] redRange = new KeyValuePair<Hsv, Hsv>[]
-        { 
-            new KeyValuePair<Hsv,Hsv>(new Hsv(0,85,80), new Hsv(12,255,255)),
-            new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
-        };
-        private static KeyValuePair<Hsv, Hsv>[] greenRange = new KeyValuePair<Hsv, Hsv>[]
-        { 
-            new KeyValuePair<Hsv,Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255))
-        };
-        private static KeyValuePair<Hsv, Hsv>[] yellowRange = new KeyValuePair<Hsv, Hsv>[]
-        { 
-            new KeyValuePair<Hsv,Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255))
-        };
-        private static List<KeyValuePair<Hsv, Hsv>[]> ranges = new List<KeyValuePair<Hsv, Hsv>[]> { blueRange, redRange, greenRange, yellowRange };
+        } 
         #endregion
-
-        
     }
 }
