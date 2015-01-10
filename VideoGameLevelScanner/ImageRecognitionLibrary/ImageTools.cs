@@ -172,7 +172,7 @@ namespace ImageRecognitionLibrary
 
         public static Image<Bgr, byte> DrawRooms(int maxWidth, int maxHeight, int[,] data)
         {
-            Bgr[] palette = GetRandomPalette(data.Cast<int>().Distinct().Count());
+            Bgr[] palette = GetRandomPalette(data.Cast<int>().Max()+1);
             return DrawLookupImage(maxWidth, maxHeight, data, palette);
         }
 
@@ -273,6 +273,7 @@ namespace ImageRecognitionLibrary
 
             for (int i = 0; i < 4; i++)
             {
+                
                 filtered[i] = ImageTools.FilterColor(hsvImg, filteringParameters.ColorsRanges[i]);
                 dds[i] = ImageTools.DetectSquares(filtered[i]);
                 dds[i].RemoveNoises();
@@ -282,7 +283,8 @@ namespace ImageRecognitionLibrary
             dds[0].AddColor(dds[2]);
             dds[0].AddColor(dds[3]);
             board = dds[0].CreateBoard();
-            board.DetectRooms();
+            if (board!=null)
+                board.DetectRooms();
             return board;
         } 
         #endregion

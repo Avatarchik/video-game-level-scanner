@@ -83,6 +83,9 @@ namespace ImageRecognitionLibrary
         {
             int roomCounter = 1;
             LinkedList<Point> otherRoomsQueue = new LinkedList<Point>();
+            var firstColored = FirstColored();
+            if (firstColored > height)
+                return;
             otherRoomsQueue.AddLast(new Point(FirstColored(),0));
             while(otherRoomsQueue.Count != 0)
             {
@@ -122,6 +125,10 @@ namespace ImageRecognitionLibrary
                 otherRoomsQueue = new LinkedList<Point>(otherRoomsQueue.Except(roomCoordinates).Where(p => this[p] < 0).ToList());
                 roomCoordinates.Clear();
             }
+            for (int x = 0; x < height; ++x)
+                for (int y = 0; y < width; ++y)
+                    if (this[x, y] < 0)
+                        this[x, y] = 0;
         }
         protected bool IsInBoundaries(Point point)
         {
