@@ -17,6 +17,7 @@ public class IntegrationTest : MonoBehaviour {
     private bool processingFrame = false;
     private Capture capture;
     private Image<Bgr,byte> frame;
+    private Image<Bgr, byte> lookupImage;
     private Board board;
     private Timer cameraTimer;
     private FilteringParameters filteringParameters;
@@ -60,19 +61,24 @@ public class IntegrationTest : MonoBehaviour {
         
 
         frame = capture.QueryFrame();
-        cameraTex = TextureConvert.ImageToTexture2D<Bgr, byte>(frame, true);
-        GameObject.Find("CameraImage").GetComponent<UnityEngine.UI.Image>().sprite = Sprite.Create(cameraTex, new Rect(0, 0, cameraTex.width, cameraTex.height), new Vector2(0.5f, 0.5f));
-        
+        if (frame != null) { 
+            cameraTex = TextureConvert.ImageToTexture2D<Bgr, byte>(frame, true);
+            GameObject.Find("CameraImage").GetComponent<UnityEngine.UI.Image>().sprite = Sprite.Create(cameraTex, new Rect(0, 0, cameraTex.width, cameraTex.height), new Vector2(0.5f, 0.5f));
+        }
         if (!processingFrame) {
             Debug.Log("Analysis fired");
             processingFrame = true;
             
             board = ImageTools.ReadFromFrame (frame,filteringParameters);
-            var img = ImageTools.DrawRooms (320,240, board.Grid);
 
-            if (img != null)
+            if (board != null)
+                lookupImage = ImageTools.DrawRooms(320, 240, board.Grid);
+            else
+                lookupImage = new Image<Bgr, byte>(320, 240, new Bgr(0, 0, 0));
+
+            if (lookupImage != null)
             {
-                lookupTex = TextureConvert.ImageToTexture2D<Bgr, byte>(img, true);
+                lookupTex = TextureConvert.ImageToTexture2D<Bgr, byte>(lookupImage, true);
                 GameObject.Find("Lookup").GetComponent<UnityEngine.UI.Image>().sprite = Sprite.Create(lookupTex, new Rect(0, 0, lookupTex.width, lookupTex.height), new Vector2(0.5f, 0.5f));
             }
             processingFrame = false;
