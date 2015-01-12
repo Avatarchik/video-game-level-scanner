@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using ImageRecognitionLibrary;
 
 public class LevelBuilder : MonoBehaviour
 {
@@ -15,21 +16,22 @@ public class LevelBuilder : MonoBehaviour
     public Room[] Rooms;
     static private System.Random rnd = new System.Random();
 
-    void Start()
+    void BuildLevel(Board board)
     {
+        matrix = board.Grid;
         //example matrix
-        matrix = new int[,] {
-            { 0, 0, 0, 0, 0, 0, 0 }, 
-            { 0, 9, 5, 5, 8, 8, 0 }, 
-            { 0, 9, 1, 1, 1, 1, 0 }, 
-            { 0, 9, 2, 2, 2, 1, 0 }, 
-            { 0, 9, 3, 3, 3, 4, 0 }, 
-            { 0, 9, 7, 7, 7, 6, 0 }, 
-            { 0, 9, 12, 11, 10, 10, 0 }, 
-            { 0, 9, 13, 13, 10, 10, 0 }, 
-            { 0, 9, 9, 9, 9, 9, 0 }, 
-            { 0, 0, 0, 0, 0, 0, 0 } 
-        };
+        //matrix = new int[,] {
+        //    { 0, 0, 0, 0, 0, 0, 0 }, 
+        //    { 0, 9, 5, 5, 8, 8, 0 }, 
+        //    { 0, 9, 1, 1, 1, 1, 0 }, 
+        //    { 0, 9, 2, 2, 2, 1, 0 }, 
+        //    { 0, 9, 3, 3, 3, 4, 0 }, 
+        //    { 0, 9, 7, 7, 7, 6, 0 }, 
+        //    { 0, 9, 12, 11, 10, 10, 0 }, 
+        //    { 0, 9, 13, 13, 10, 10, 0 }, 
+        //    { 0, 9, 9, 9, 9, 9, 0 }, 
+        //    { 0, 0, 0, 0, 0, 0, 0 } 
+        //};
         int n=13;
         floors = new Floor[matrix.GetLength(0)-2,matrix.GetLength(1)-2];
         walls = new Wall[matrix.GetLength(0)-1, matrix.GetLength(1)-1];
@@ -50,6 +52,10 @@ public class LevelBuilder : MonoBehaviour
                     wall.gameObject.transform.parent = this.transform;
                 //Debug.Log("Putting into array wall in " + x + "," + y + ".");
                 walls[x, y] = wall;
+                AddWallToRoom(x, y, wall);
+                AddWallToRoom(x+1, y, wall);
+                AddWallToRoom(x, y+1, wall);
+                AddWallToRoom(x+1, y+1, wall);
             }
         }
         for (int x = 1; x < (matrix.GetLength(0) - 1); x++) 
@@ -72,10 +78,7 @@ public class LevelBuilder : MonoBehaviour
         //    for (int y = 0; y < floors.GetLength(1); y++)
         //        if (floors[x, y] != null)
         //            Debug.Log("Floor consistency for x=" + x + " y=" + y + " (" + floors[x, y].X + "," + floors[x, y].Y + ")");
-        foreach (var room in Rooms)
-        {
-            Debug.Log(room.ToString());
-        }
+
         //Graph.ForEach(item => Debug.Log(item[0] + "," + item[1]));
         //var k = graph.Kruskal();
         //k.ForEach(edge => Debug.Log(edge.U + "," + edge.V));
@@ -84,9 +87,20 @@ public class LevelBuilder : MonoBehaviour
         {
             SpawnDoor(FindPlaceForDoor(Rooms[edge.U-1], Rooms[edge.V-1]));
         }
-        
+        foreach (var room in Rooms)
+        {
+            //Debug.Log(room.ToString());
+            room.SetRoomMaterial();
+        }
+ 
     }
 
+    private void AddWallToRoom(int x, int y, Wall wall)
+    {
+        if (x>=0 && y>=0 && matrix[x,y]!=null && matrix[x, y] > 0)
+            Rooms[matrix[x, y]-1].Walls.Add(wall);
+    }
+    
 
 
     void Update()
