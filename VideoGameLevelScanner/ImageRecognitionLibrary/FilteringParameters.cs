@@ -9,10 +9,10 @@ namespace ImageRecognitionLibrary
     public class FilteringParameters
     {
         ISettingsManager settingsManager;
-        private FilteringParameters(ISettingsManager settingsManager)
+        public FilteringParameters(ISettingsManager settingsManager)
         {
             this.settingsManager = settingsManager;
-            ReadValuesFromSettings();
+            this.InitializeRanges();
         }
 
         public void ResetValues()
@@ -67,17 +67,33 @@ namespace ImageRecognitionLibrary
                 h = 179;
             return new Hsv(h, s, v);
         }
-        private Hsv blueMin;
-        private Hsv blueMax;
-        private Hsv redMin;
-        private Hsv redMax;
-        private Hsv redMin2;
-        private Hsv redMax2;
-        private Hsv greenMin;
-        private Hsv greenMax;
-        private Hsv yellowMin;
-        private Hsv yellowMax;
+        private Hsv blueMin = new Hsv(90, 90, 90);
+        private Hsv blueMax = new Hsv(120, 255, 255);
+        private Hsv redMin = new Hsv(0,85,80);
+        private Hsv redMax = new Hsv(12,255,255);
+        private Hsv redMin2 = new Hsv(150,85,80);
+        private Hsv redMax2 = new Hsv(179,255,255);
+        private Hsv greenMin = new Hsv(35, 70, 35);
+        private Hsv greenMax = new Hsv(90, 255, 255);
+        private Hsv yellowMin = new Hsv(10, 70, 127);
+        private Hsv yellowMax = new Hsv(35, 255, 255);
 
+        private KeyValuePair<Hsv, Hsv>[] blueRange;
+        private KeyValuePair<Hsv, Hsv>[] redRange;
+        private KeyValuePair<Hsv, Hsv>[] greenRange;
+        private KeyValuePair<Hsv, Hsv>[] yellowRange;
+        private List<KeyValuePair<Hsv, Hsv>[]> colorRanges;
+
+        private void InitializeRanges()
+        {
+            blueRange = new KeyValuePair<Hsv, Hsv>[] { new KeyValuePair<Hsv, Hsv>(blueMin, blueMax) };
+            redRange = new KeyValuePair<Hsv, Hsv>[] { new KeyValuePair<Hsv, Hsv>(redMin, redMax), new KeyValuePair<Hsv, Hsv>(redMin2, redMax2) };
+            greenRange = new KeyValuePair<Hsv, Hsv>[] { new KeyValuePair<Hsv, Hsv>(greenMin, greenMax) };
+            yellowRange = new KeyValuePair<Hsv, Hsv>[] { new KeyValuePair<Hsv, Hsv>(yellowMin, yellowMax) };
+            colorRanges = new List<KeyValuePair<Hsv, Hsv>[]> { blueRange, redRange, greenRange, yellowRange };
+        }
+
+        #region Single Parameters
         public double BlueMinH { get { return blueMin.Hue; } set { blueMin.Hue = value; } }
         public double BlueMinS { get { return blueMin.Satuation; } set { blueMin.Satuation = value; } }
         public double BlueMinV { get { return blueMin.Value; } set { blueMin.Value = value; } }
@@ -112,31 +128,22 @@ namespace ImageRecognitionLibrary
         public double YellowMaxH { get { return yellowMax.Hue; } set { yellowMax.Hue = value; } }
         public double YellowMaxS { get { return yellowMax.Satuation; } set { yellowMax.Satuation = value; } }
         public double YellowMaxV { get { return yellowMax.Value; } set { yellowMax.Value = value; } }
+        #endregion
+        public Hsv BlueMin { get { return blueMin; } private set { blueMin.Hue = value.Hue; blueMin.Satuation = value.Satuation; blueMin.Value = value.Value; } }
+        public Hsv BlueMax { get { return blueMax; } private set { blueMax.Hue = value.Hue; blueMax.Satuation = value.Satuation; blueMax.Value = value.Value; } }
+        public Hsv RedMin { get { return redMin; } private set { redMin.Hue = value.Hue; redMin.Satuation = value.Satuation; redMin.Value = value.Value; } }
+        public Hsv RedMax { get { return redMax; } private set { redMax.Hue = value.Hue; redMax.Satuation = value.Satuation; redMax.Value = value.Value; } }
+        public Hsv RedMin2 { get { return redMin2; } private set { redMin2.Hue = value.Hue; redMin2.Satuation = value.Satuation; redMin2.Value = value.Value; } }
+        public Hsv RedMax2 { get { return redMax2; } private set { redMax2.Hue = value.Hue; redMax2.Satuation = value.Satuation; redMax2.Value = value.Value; } }
+        public Hsv GreenMin { get { return greenMin; } private set { greenMin.Hue = value.Hue; greenMin.Satuation = value.Satuation; greenMin.Value = value.Value; } }
+        public Hsv GreenMax { get { return greenMax; } private set { greenMax.Hue = value.Hue; greenMax.Satuation = value.Satuation; greenMax.Value = value.Value; } }
+        public Hsv YellowMin { get { return yellowMin; } private set { yellowMin.Hue = value.Hue; yellowMin.Satuation = value.Satuation; yellowMin.Value = value.Value; } }
+        public Hsv YellowMax { get { return yellowMax; } private set { yellowMax.Hue = value.Hue; yellowMax.Satuation = value.Satuation; yellowMax.Value = value.Value; } }
 
-        public Hsv BlueMin { get { return blueMin; } set { blueMin = value; } }
-        public Hsv BlueMax { get { return blueMax; } set { blueMax = value; } }
-        public Hsv RedMin { get { return redMin; } set { redMin = value; } }
-        public Hsv RedMax { get { return redMax; } set { redMax = value; } }
-        public Hsv RedMin2 { get { return redMin2; } set { redMin2 = value; } }
-        public Hsv RedMax2 { get { return redMax2; } set { redMax2 = value; } }
-        public Hsv GreenMin { get { return greenMin; } set { greenMin = value; } }
-        public Hsv GreenMax { get { return greenMax; } set { greenMax = value; } }
-        public Hsv YellowMin { get { return yellowMin; } set { yellowMin = value; } }
-        public Hsv YellowMax { get { return yellowMax; } set { yellowMax = value; } }
-
-        public KeyValuePair<Hsv, Hsv> BlueRange { get { return new KeyValuePair<Hsv, Hsv>(blueMin, blueMax); } }
-        public List<KeyValuePair<Hsv, Hsv>> RedRange
-        {
-            get
-            {
-                return new List<KeyValuePair<Hsv, Hsv>>
-                { 
-                    new KeyValuePair<Hsv,Hsv>(redMin,redMax), 
-                    new KeyValuePair<Hsv,Hsv>(redMin2,redMax2)
-                };
-            }
-        }
-        public KeyValuePair<Hsv, Hsv> GreenRange { get { return new KeyValuePair<Hsv, Hsv>(greenMin, greenMax); } }
-        public KeyValuePair<Hsv, Hsv> YellowRange { get { return new KeyValuePair<Hsv, Hsv>(yellowMin, yellowMax); } }
+        public KeyValuePair<Hsv, Hsv>[] BlueRange { get { return blueRange; } }
+        public KeyValuePair<Hsv, Hsv>[] RedRange { get { return redRange; } }
+        public KeyValuePair<Hsv, Hsv>[] GreenRange { get { return greenRange; } }
+        public KeyValuePair<Hsv, Hsv>[] YellowRange { get { return yellowRange; } }
+        public List<KeyValuePair<Hsv, Hsv>[]> ColorsRanges { get { return colorRanges; } } 
     }
 }
