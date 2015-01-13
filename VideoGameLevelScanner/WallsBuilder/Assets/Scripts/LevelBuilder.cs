@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using ImageRecognitionLibrary;
+using System.Text;
 
 public class LevelBuilder : MonoBehaviour
 {
@@ -16,9 +17,9 @@ public class LevelBuilder : MonoBehaviour
     public Room[] Rooms;
     static private System.Random rnd = new System.Random();
 
-    void BuildLevel(Board board)
+    public void BuildLevel(Board board)
     {
-        matrix = board.Grid;
+        matrix = PrepareMatrix(board.Grid);
         //example matrix
         //matrix = new int[,] {
         //    { 0, 0, 0, 0, 0, 0, 0 }, 
@@ -62,12 +63,15 @@ public class LevelBuilder : MonoBehaviour
         {
             for (int y = 1; y < (matrix.GetLength(1) - 1); y++)
             {
-                //Debug.Log("Trying to create floor in " + (x-1) + "," + (y-1) + ".");
-                var floor = new Floor(x - 1, y - 1, unit);
-                floor.gameObject.transform.parent = this.transform;
-                //Debug.Log("Putting into array floor in " + (x-1) + "," + (y-1) + ".");
-                floors[x - 1, y - 1] = floor;
-                Rooms[matrix[x, y]-1].floors.Add(floor); 
+                if (matrix[x, y] > 0)
+                {
+                    //Debug.Log("Trying to create floor in " + (x-1) + "," + (y-1) + ".");
+                    var floor = new Floor(x - 1, y - 1, unit);
+                    floor.gameObject.transform.parent = this.transform;
+                    //Debug.Log("Putting into array floor in " + (x-1) + "," + (y-1) + ".");
+                    floors[x - 1, y - 1] = floor;
+                    Rooms[matrix[x, y] - 1].floors.Add(floor);
+                }
             }
         }
         //for (int x = 0; x < walls.GetLength(0); x++)
@@ -224,5 +228,29 @@ public class LevelBuilder : MonoBehaviour
                 break;
         }
         return wall;
+    }
+
+    private int[,] PrepareMatrix(int[,] matrix)
+    {
+        LogMatrix(matrix);
+        int[,] result = new int[matrix.GetLength(0)+2, matrix.GetLength(1)+2];
+        for (int x = 0; x < matrix.GetLength(0); ++x)
+            for (int y = 0; y < matrix.GetLength(1); ++y)
+                result[x + 1, y + 1] = matrix[x, y];
+        LogMatrix(result);
+        return result;
+    }
+    private void LogMatrix(int[,] matrix)
+    {
+        StringBuilder sb = new StringBuilder("Matrix("+matrix.GetLength(0)+","+matrix.GetLength(1)+") \n");
+        for (int x = 0; x < matrix.GetLength(0); ++x)
+        {
+            for (int y = 0; y < matrix.GetLength(1); ++y)
+            {
+                sb.Append(matrix[x, y] + ",");
+            }
+            sb.AppendLine();
+        }
+        Debug.Log(sb.ToString());
     }
 }
