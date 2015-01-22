@@ -63,7 +63,7 @@ namespace LibraryUnitTest
         public void FilterFromMultipleRanges()
         {
             var img = new Image<Hsv, byte>(Properties.Resources.Combineresult);
-            var ranges = new List<KeyValuePair<Hsv, Hsv>> { rangeYellow };
+            var ranges = new List<Range<Hsv>> { rangeYellow };
             ranges.AddRange(rangeRed);
 
             var filtered = ImageTools.FilterColor(img, ranges);
@@ -164,13 +164,13 @@ namespace LibraryUnitTest
         private Bgr Turquoise = new Bgr(255, 255, 0);
         private Bgr Black = new Bgr(0, 0, 0);
         private Bgr White = new Bgr(255, 255, 255);
-        private KeyValuePair<Hsv, Hsv>[] rangeRed = new KeyValuePair<Hsv, Hsv>[]{
-                    new KeyValuePair<Hsv,Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
-                    new KeyValuePair<Hsv,Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
+        private Range<Hsv>[] rangeRed = new Range<Hsv>[]{
+                    new Range<Hsv>(new Hsv(0, 85, 80), new Hsv(12, 255, 255)),
+                    new Range<Hsv>(new Hsv(150,85,80), new Hsv(179,255,255))
                 };
-        private KeyValuePair<Hsv, Hsv> rangeBlue = new KeyValuePair<Hsv, Hsv>(new Hsv(90, 90, 50), new Hsv(120, 255, 255));
-        private KeyValuePair<Hsv, Hsv> rangeGreen = new KeyValuePair<Hsv, Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255));
-        private KeyValuePair<Hsv, Hsv> rangeYellow = new KeyValuePair<Hsv, Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255));
+        private Range<Hsv> rangeBlue = new Range<Hsv>(new Hsv(90, 90, 50), new Hsv(120, 255, 255));
+        private Range<Hsv> rangeGreen = new Range<Hsv>(new Hsv(35, 70, 35), new Hsv(90, 255, 255));
+        private Range<Hsv> rangeYellow = new Range<Hsv>(new Hsv(10, 70, 127), new Hsv(35, 255, 255));
         #endregion
     }
 }

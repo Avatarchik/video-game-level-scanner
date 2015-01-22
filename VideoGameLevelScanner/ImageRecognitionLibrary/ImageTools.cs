@@ -30,19 +30,20 @@ namespace ImageRecognitionLibrary
         }
 
         //for many color ranges (needed in case of red)
-        public static Image<Gray, byte> FilterColor(Image<Hsv, Byte> src, IEnumerable<KeyValuePair<Hsv, Hsv>> colors, string debugWindowName = "")
+        public static Image<Gray, byte> FilterColor(Image<Hsv, Byte> src, IEnumerable<Range<Hsv>> colors, string debugWindowName = "")
         {
             Image<Gray,Byte> result;
             
-            Image<Gray,Byte>[] partialResults = new Image<Gray,byte>[colors.Count<KeyValuePair<Hsv,Hsv>>()];
+            Image<Gray,Byte>[] partialResults = new Image<Gray,byte>[colors.Count()];
             int counter = 0;
             foreach (var colorPair in colors){
-                partialResults[counter] = FilterColor(src, colorPair.Key, colorPair.Value);
+                partialResults[counter] = FilterColor(src, colorPair.Min, colorPair.Max);
                 counter++;
             }
 
             result = CombineMapsBW(partialResults);
-
+            foreach (var partialResult in partialResults)
+                partialResult.Dispose();
             ShowInNamedWindow(result, debugWindowName);
             return result;
         }
@@ -214,6 +215,8 @@ namespace ImageRecognitionLibrary
             {
                 palette[i] = bgrPalette[0,i];
             }
+            hsvPalette.Dispose();
+            bgrPalette.Dispose();
             return palette;
         }
         #endregion
@@ -277,6 +280,7 @@ namespace ImageRecognitionLibrary
                 filtered[i] = ImageTools.FilterColor(hsvImg, filteringParameters.ColorsRanges[i]);
                 dds[i] = ImageTools.DetectSquares(filtered[i]);
                 dds[i].RemoveNoises();
+                filtered[i].Dispose();
             };
 
             dds[0].AddColor(dds[1]);

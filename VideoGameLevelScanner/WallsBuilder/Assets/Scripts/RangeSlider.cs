@@ -3,10 +3,10 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class RangeSlider : MonoBehaviour {
-    Slider minSlider;
-    Slider maxSlider;
-    Text minText;
-    Text maxText;
+    public Slider minSlider;
+    public Slider maxSlider;
+    public Text minText;
+    public Text maxText;
  
     public float min;
     public float Min
@@ -61,14 +61,30 @@ public class RangeSlider : MonoBehaviour {
 
     private void Start()
     {
-        minSlider = transform.FindChild("Background/MinSlider").GetComponent<Slider>();
-        maxSlider = transform.FindChild("Background/MaxSlider").GetComponent<Slider>();
-        minText = transform.FindChild("MinText").GetComponent<Text>();
-        maxText = transform.FindChild("MaxText").GetComponent<Text>();
+        //minSlider = transform.FindChild("Background/MinSlider").GetComponent<Slider>();
+        //maxSlider = transform.FindChild("Background/MaxSlider").GetComponent<Slider>();
+        //minText = transform.FindChild("MinText").GetComponent<Text>();
+        //maxText = transform.FindChild("MaxText").GetComponent<Text>();
         this.Min = min;
         this.Max = max;
         this.MaxValue = maximalValue;
         this.MinValue = minimalValue;
+    }
+
+    public void SetRange(float min, float max)
+    {
+        if (this.max > min)
+        {
+            this.Min = min;
+            this.Max = max;
+        }
+        else
+        {
+            this.Max = max;
+            this.Min = min;
+        }
+
+
     }
 
 

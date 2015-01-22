@@ -10,7 +10,8 @@ namespace ImageRecognitionLibrary
     public interface ISettingsManager
     {
         string Read(ColorSetting setting);
-        void Save(ColorSetting setting, string value);
-        bool DoesValuesExist();
+        void ChangeValue(ColorSetting setting, string value);
+        void Save();
+        bool DoValuesExist();
     }
 }

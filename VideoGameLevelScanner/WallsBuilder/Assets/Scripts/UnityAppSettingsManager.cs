@@ -23,13 +23,16 @@ public class UnityAppSettingsManager : ISettingsManager
         return PlayerPrefs.GetString(KeysNames[setting]);
     }
 
-    public void Save(ColorSetting setting, string value)
+    public void ChangeValue(ColorSetting setting, string value)
     {
         PlayerPrefs.SetString(KeysNames[setting], value);
+    }
+    public void Save()
+    {
         PlayerPrefs.Save();
     }
 
-    public bool DoesValuesExist()
+    public bool DoValuesExist()
     {
         foreach (var pair in KeysNames)
         {
