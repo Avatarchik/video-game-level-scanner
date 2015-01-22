@@ -2,7 +2,9 @@ fileFormatVersion: 2
 guid: 1957155a18ee31744a418b598b7f348a
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - WallMaterial: {instanceID: 0}
+  - FloorMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
