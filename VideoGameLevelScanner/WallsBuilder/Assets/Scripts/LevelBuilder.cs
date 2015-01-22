@@ -15,51 +15,55 @@ public class LevelBuilder : MonoBehaviour
     public Floor[,] floors;
     public Wall[,] walls;
     public Room[] Rooms;
+    public Material DefaultFloorMaterial;
     static private System.Random rnd = new System.Random();
 
+    void Start()
+    {
+        matrix = new int[,] {
+            { 0, 0, 0, 0, 0, 0, 0 }, 
+            { 0, 9, 5, 5, 8, 8, 0 }, 
+            { 0, 9, 1, 1, 1, 1, 0 }, 
+            { 0, 9, 2, 2, 2, 1, 0 }, 
+            { 0, 9, 3, 3, 3, 4, 0 }, 
+            { 0, 9, 7, 7, 7, 6, 0 }, 
+            { 0, 9, 12, 11, 10, 10, 0 }, 
+            { 0, 9, 13, 13, 10, 10, 0 }, 
+            { 0, 9, 9, 9, 9, 9, 0 }, 
+            { 0, 0, 0, 0, 0, 0, 0 } 
+        };
+        BuildLevel(new Board(10, 10));
+    }
+    
     public void BuildLevel(Board board)
     {
-        matrix = PrepareMatrix(board.Grid);
-        //example matrix
-        //matrix = new int[,] {
-        //    { 0, 0, 0, 0, 0, 0, 0 }, 
-        //    { 0, 9, 5, 5, 8, 8, 0 }, 
-        //    { 0, 9, 1, 1, 1, 1, 0 }, 
-        //    { 0, 9, 2, 2, 2, 1, 0 }, 
-        //    { 0, 9, 3, 3, 3, 4, 0 }, 
-        //    { 0, 9, 7, 7, 7, 6, 0 }, 
-        //    { 0, 9, 12, 11, 10, 10, 0 }, 
-        //    { 0, 9, 13, 13, 10, 10, 0 }, 
-        //    { 0, 9, 9, 9, 9, 9, 0 }, 
-        //    { 0, 0, 0, 0, 0, 0, 0 } 
-        //};
+        //matrix = PrepareMatrix(board.Grid);
         int n=13;
         floors = new Floor[matrix.GetLength(0)-2,matrix.GetLength(1)-2];
         walls = new Wall[matrix.GetLength(0)-1, matrix.GetLength(1)-1];
         Rooms = new Room[n];
         for (int i = 0; i < n; ++i)
         {
-            Rooms[i] = new Room(i+1);
+            Rooms[i] = new Room(i+1, DefaultFloorMaterial);
         }
         Vector3 shift = new Vector3(((matrix.GetLength(1) - 2) * unit) / 2, 0f, ((matrix.GetLength(0) - 2) * -unit) / 2);
-        GameObject.Find("LevelCreator").transform.position = shift;
-        for (int x = 0; x < (matrix.GetLength(0) - 1); x++)
+        this.transform.position = shift;
+        SpawnWalls();
+        SpawnFloors();
+        var roomsWithDoors = graph.Kruskal();
+        foreach (var edge in roomsWithDoors)
         {
-            for (int y = 0; y < (matrix.GetLength(1) - 1); y++)
-            {
-                //Debug.Log("Trying to create wall in " + x + "," + y + ".");
-                var wall = SpawnWall(MakeHash(matrix[x, y], matrix[x + 1, y], matrix[x + 1, y + 1], matrix[x, y + 1]), unit, x, y);
-                if (wall != null) 
-                    wall.gameObject.transform.parent = this.transform;
-                //Debug.Log("Putting into array wall in " + x + "," + y + ".");
-                walls[x, y] = wall;
-                AddWallToRoom(x, y, wall);
-                AddWallToRoom(x+1, y, wall);
-                AddWallToRoom(x, y+1, wall);
-                AddWallToRoom(x+1, y+1, wall);
-            }
+            SpawnDoor(FindPlaceForDoor(Rooms[edge.U-1], Rooms[edge.V-1]));
         }
-        for (int x = 1; x < (matrix.GetLength(0) - 1); x++) 
+        foreach (var room in Rooms)
+        {
+            room.SetRoomMaterial();
+        }
+    }
+
+    private void SpawnFloors()
+    {
+        for (int x = 1; x < (matrix.GetLength(0) - 1); x++)
         {
             for (int y = 1; y < (matrix.GetLength(1) - 1); y++)
             {
@@ -74,29 +78,26 @@ public class LevelBuilder : MonoBehaviour
                 }
             }
         }
-        //for (int x = 0; x < walls.GetLength(0); x++)
-        //    for (int y = 0; y < walls.GetLength(1); y++)
-        //        if(walls[x,y]!=null)
-        //            Debug.Log("Wall consistency for x=" + x + " y=" + y + " (" + walls[x, y].X + "," + walls[x, y].Y + ")");
-        //for (int x = 0; x < floors.GetLength(0); x++)
-        //    for (int y = 0; y < floors.GetLength(1); y++)
-        //        if (floors[x, y] != null)
-        //            Debug.Log("Floor consistency for x=" + x + " y=" + y + " (" + floors[x, y].X + "," + floors[x, y].Y + ")");
+    }
 
-        //Graph.ForEach(item => Debug.Log(item[0] + "," + item[1]));
-        //var k = graph.Kruskal();
-        //k.ForEach(edge => Debug.Log(edge.U + "," + edge.V));
-        var roomsWithDoors = graph.Kruskal();
-        foreach (var edge in roomsWithDoors)
+    private void SpawnWalls()
+    {
+        for (int x = 0; x < (matrix.GetLength(0) - 1); x++)
         {
-            SpawnDoor(FindPlaceForDoor(Rooms[edge.U-1], Rooms[edge.V-1]));
+            for (int y = 0; y < (matrix.GetLength(1) - 1); y++)
+            {
+                //Debug.Log("Trying to create wall in " + x + "," + y + ".");
+                var wall = SpawnWall(MakeHash(matrix[x, y], matrix[x + 1, y], matrix[x + 1, y + 1], matrix[x, y + 1]), unit, x, y);
+                if (wall != null)
+                    wall.gameObject.transform.parent = this.transform;
+                //Debug.Log("Putting into array wall in " + x + "," + y + ".");
+                walls[x, y] = wall;
+                AddWallToRoom(x, y, wall);
+                AddWallToRoom(x + 1, y, wall);
+                AddWallToRoom(x, y + 1, wall);
+                AddWallToRoom(x + 1, y + 1, wall);
+            }
         }
-        foreach (var room in Rooms)
-        {
-            //Debug.Log(room.ToString());
-            room.SetRoomMaterial();
-        }
- 
     }
 
     private void AddWallToRoom(int x, int y, Wall wall)
@@ -104,16 +105,16 @@ public class LevelBuilder : MonoBehaviour
         if (x>=0 && y>=0 && matrix[x,y]!=null && matrix[x, y] > 0)
             Rooms[matrix[x, y]-1].Walls.Add(wall);
     }
-    
 
-
-    void Update()
-    {
-    }
-
+    /// <summary>
+    /// Gets pairs of coordinates of neighbouring floors where a passage can be made.
+    /// </summary>
+    /// <param name="roomA"></param>
+    /// <param name="roomB"></param>
+    /// <returns>List of pairs of coordinates.</returns>
     private KeyValuePair<KeyValuePair<int, int>, KeyValuePair<int, int>> FindPlaceForDoor(Room roomA, Room roomB)
     {
-        Debug.Log("Connecting rooms " + roomA.N + " " + roomB.N);
+        //Debug.Log("Connecting rooms " + roomA.N + " " + roomB.N);
         var neighbouringFloors = new List<KeyValuePair<KeyValuePair<int, int>, KeyValuePair<int, int>>>();
         foreach (var floorA in roomA.floors) {
             foreach (var floorB in roomB.floors) {
@@ -122,12 +123,12 @@ public class LevelBuilder : MonoBehaviour
             }
         }
         var place = rnd.Next(neighbouringFloors.Count);
-        Debug.Log(neighbouringFloors.Count);
-        foreach (var pair in neighbouringFloors)
-        {
-            Debug.Log("Pair (" + pair.Key + "),(" + pair.Value + ")");
-        }
-        Debug.Log("Pair (" + neighbouringFloors[place].Key + "),(" + neighbouringFloors[place].Value + ")");
+        //Debug.Log(neighbouringFloors.Count);
+        //foreach (var pair in neighbouringFloors)
+        //{
+        //    Debug.Log("Pair (" + pair.Key + "),(" + pair.Value + ")");
+        //}
+        //Debug.Log("Pair (" + neighbouringFloors[place].Key + "),(" + neighbouringFloors[place].Value + ")");
         return neighbouringFloors[place];
     }
 
@@ -225,7 +226,6 @@ public class LevelBuilder : MonoBehaviour
             default:
                 Debug.LogWarning("Error reading hash, incorrect h23ash");
                 throw new ArgumentException("Inproper hash code");
-                break;
         }
         return wall;
     }
