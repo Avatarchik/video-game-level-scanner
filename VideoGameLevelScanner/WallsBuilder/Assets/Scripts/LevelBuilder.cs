@@ -10,6 +10,7 @@ public class LevelBuilder : MonoBehaviour
 {
     public int[,] matrix;
     public int unit = 8;
+    public RoomPropertiesPanelScript RoomPropertiesPanel;
     static Quaternion constQuaternion;
     private Graph graph = new Graph();
     public Floor[,] floors;
@@ -46,18 +47,41 @@ public class LevelBuilder : MonoBehaviour
         {
             Rooms[i] = new Room(i+1, DefaultFloorMaterial);
         }
+        RoomPropertiesPanel.InitializePanel(n);
         Vector3 shift = new Vector3(((matrix.GetLength(1) - 2) * unit) / 2, 0f, ((matrix.GetLength(0) - 2) * -unit) / 2);
         this.transform.position = shift;
         SpawnWalls();
         SpawnFloors();
-        var roomsWithDoors = graph.Kruskal();
-        foreach (var edge in roomsWithDoors)
-        {
-            SpawnDoor(FindPlaceForDoor(Rooms[edge.U-1], Rooms[edge.V-1]));
-        }
+        SpawnDoors();
         foreach (var room in Rooms)
         {
             room.SetRoomMaterial();
+        }
+    }
+    public void RespawnDoors()
+    {
+        foreach (var wall in walls)
+        {
+            if (wall != null)
+            {
+                if (wall.sides.Left == MultiWallScript.Mode.Half)
+                    wall.sides.Left = MultiWallScript.Mode.Full;
+                if (wall.sides.Bottom == MultiWallScript.Mode.Half)
+                    wall.sides.Bottom = MultiWallScript.Mode.Full;
+                if (wall.sides.Right == MultiWallScript.Mode.Half)
+                    wall.sides.Right = MultiWallScript.Mode.Full;
+                if (wall.sides.Top == MultiWallScript.Mode.Half)
+                    wall.sides.Top = MultiWallScript.Mode.Full;
+            }
+        }
+        SpawnDoors();
+    }
+    private void SpawnDoors()
+    {
+        var roomsWithDoors = graph.Kruskal();
+        foreach (var edge in roomsWithDoors)
+        {
+            SpawnDoor(FindPlaceForDoor(Rooms[edge.U - 1], Rooms[edge.V - 1]));
         }
     }
 

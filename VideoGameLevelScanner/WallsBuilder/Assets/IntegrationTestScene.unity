@@ -1946,6 +1946,69 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 289928209}
+--- !u!1 &325618891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 325618893}
+  - 108: {fileID: 325618892}
+  m_Layer: 0
+  m_Name: Area Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!108 &325618892
+Light:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 325618891}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Type: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: .25
+  m_Range: 10
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: .0500000007
+    m_Softness: 4
+    m_SoftnessFade: 1
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_ActuallyLightmapped: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 1
+  m_ShadowSamples: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_IndirectIntensity: 1
+  m_AreaSize: {x: 1, y: 1}
+--- !u!4 &325618893
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 325618891}
+  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106829}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1 &327032758
 GameObject:
   m_ObjectHideFlags: 0
@@ -3739,6 +3802,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 11442086, guid: d0905b25ed388e849ae053fc7f8b0e6b, type: 2}
+      propertyPath: DefaultFloorMaterial
+      value: 
+      objectReference: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 11442086, guid: d0905b25ed388e849ae053fc7f8b0e6b, type: 2}
+      propertyPath: RoomPropertiesPanel
+      value: 
+      objectReference: {fileID: 2043685538}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d0905b25ed388e849ae053fc7f8b0e6b, type: 2}
   m_RootGameObject: {fileID: 1311009381}
@@ -4578,7 +4649,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 933680595}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2043685538}
+        m_MethodName: SwitchToPrevRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &933680595
@@ -6096,13 +6179,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 720144867}
   toggleTransition: 1
   graphic: {fileID: 984461681}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 2112752929}
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 414365154}
-        m_MethodName: SetActive
-        m_Mode: 0
+      - m_Target: {fileID: 2043685538}
+        m_MethodName: SwitchProperty
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
@@ -6114,7 +6197,7 @@ MonoBehaviour:
         m_CallState: 1
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &1197542501
 GameObject:
   m_ObjectHideFlags: 0
@@ -6861,6 +6944,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: 8
+  RoomPropertiesPanel: {fileID: 2043685538}
+  DefaultFloorMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!4 &1311009383
 Transform:
   m_ObjectHideFlags: 0
@@ -6981,7 +7066,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1324315609}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1311009382}
+        m_MethodName: RespawnDoors
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1324315609
@@ -7085,7 +7182,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1339723107}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2043685538}
+        m_MethodName: SwitchToNextRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1339723107
@@ -9892,10 +10001,22 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 614792723}
   toggleTransition: 1
   graphic: {fileID: 654711350}
-  m_Group: {fileID: 0}
+  m_Group: {fileID: 2112752929}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2043685538}
+        m_MethodName: SwitchProperty
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
@@ -10541,6 +10662,7 @@ GameObject:
   - 224: {fileID: 2043685535}
   - 222: {fileID: 2043685537}
   - 114: {fileID: 2043685536}
+  - 114: {fileID: 2043685538}
   m_Layer: 5
   m_Name: RoomPropertiesPanel
   m_TagString: Untagged
@@ -10594,6 +10716,27 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2043685534}
+--- !u!114 &2043685538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2043685534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcb4be85506dd334d9c5d12ae478e525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Level: {fileID: 1311009382}
+  RoomNrText: {fileID: 281424037}
+  Materials:
+  - {fileID: 2100000, guid: ac677319b0d261d48bce186201fb3ddc, type: 2}
+  - {fileID: 2100000, guid: dd6f57b804ea6a54a851ddf0ad19418b, type: 2}
+  - {fileID: 2100000, guid: b5a0848716146b54eb3da86825391944, type: 2}
+  - {fileID: 2100000, guid: 52db25161a727784dad82172acfb094f, type: 2}
+  Toggles:
+  - {fileID: 1194839329}
+  - {fileID: 1935656830}
 --- !u!1 &2061713248
 GameObject:
   m_ObjectHideFlags: 0
@@ -11134,6 +11277,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 224: {fileID: 2112752928}
+  - 114: {fileID: 2112752929}
   m_Layer: 5
   m_Name: MaterialPicker
   m_TagString: Untagged
@@ -11160,6 +11304,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: -20, y: 90}
   m_Pivot: {x: .5, y: 1}
+--- !u!114 &2112752929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2112752927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1184210157, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AllowSwitchOff: 1
 --- !u!1 &2125497593
 GameObject:
   m_ObjectHideFlags: 0
