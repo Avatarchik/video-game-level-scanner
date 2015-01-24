@@ -42,25 +42,32 @@ public class MultiWallScript : MonoBehaviour {
     public void ChangeVisibility(Side side, Mode mode)
     {
 		Transform sideObject = this.transform.FindChild(SidesNames [(int)side]);
+        Mesh leftMesh, rightMesh, midMesh;
         switch (mode)
         {
             case Mode.Full:
-                sideObject.FindChild("LeftSide").GetComponent<MeshFilter>().mesh =  fullMeshLeft;
-                sideObject.FindChild("RightSide").GetComponent<MeshFilter>().mesh = fullMeshRight;
-                sideObject.FindChild("Middle").GetComponent<MeshFilter>().mesh = fullMesh;
+                leftMesh =  fullMeshLeft;
+                rightMesh = fullMeshRight;
+                midMesh = fullMesh;
                 break;
             case Mode.Half:
-                sideObject.FindChild("LeftSide").GetComponent<MeshFilter>().mesh = halfMeshLeft;
-                sideObject.FindChild("RightSide").GetComponent<MeshFilter>().mesh = halfMeshRight;
-                sideObject.FindChild("Middle").GetComponent<MeshFilter>().mesh = halfMesh;
+                leftMesh = halfMeshLeft;
+                rightMesh = halfMeshRight;
+                midMesh = halfMesh;
                 break;
             case Mode.Empty:
-                sideObject.FindChild("LeftSide").GetComponent<MeshFilter>().mesh = null;
-                sideObject.FindChild("RightSide").GetComponent<MeshFilter>().mesh = null;
-                sideObject.FindChild("Middle").GetComponent<MeshFilter>().mesh = emptyMesh;
+                leftMesh = null;
+                rightMesh = null;
+                midMesh = emptyMesh;
                 break;
             default:
                 throw new ArgumentException();
         }
+        sideObject.FindChild("LeftSide").GetComponent<MeshFilter>().mesh = leftMesh;
+        sideObject.FindChild("LeftSide").GetComponent<MeshCollider>().mesh = leftMesh;
+        sideObject.FindChild("RightSide").GetComponent<MeshFilter>().mesh = rightMesh;
+        sideObject.FindChild("RightSide").GetComponent<MeshCollider>().mesh = rightMesh;
+        sideObject.FindChild("Middle").GetComponent<MeshFilter>().mesh = midMesh;
+        sideObject.FindChild("Middle").GetComponent<MeshCollider>().mesh = midMesh;
     }
 }

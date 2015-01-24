@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unit: 8
+  DefaultFloorMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!4 &832154519
 Transform:
   m_ObjectHideFlags: 0
@@ -211,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f9d1e671c9821545be174e0dd590d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 832154519}
+  target: {fileID: 0}
   distance: 10
   xSpeed: 250
   ySpeed: 120
