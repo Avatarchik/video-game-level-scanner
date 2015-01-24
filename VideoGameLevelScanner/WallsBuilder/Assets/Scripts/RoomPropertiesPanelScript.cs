@@ -21,31 +21,15 @@ public class RoomPropertiesPanelScript : MonoBehaviour {
     }
     private bool isInitialized = false;
     public Material[] Materials = new Material[noColors];
-    public Toggle[] Toggles;
+    public Button[] Buttons;
    
     public void InitializePanel(int N)
     {
         noRooms = N;
         CurrentRoom = 0;
         isInitialized = true;
-        UpdatePanel();
     }
-    public void UpdatePanel()
-    {
-        if (isInitialized)
-        {
-            var room = Level.Rooms[currentRoom];
-            int toggleIndex = FindMaterialIndex(room.FloorMaterial);
-            foreach (var toggle in Toggles.Where(toggle => toggle.isOn == true))
-            {
-                toggle.isOn = false;
-            }
-            if (toggleIndex > -1)
-	        {
-                Toggles[toggleIndex].isOn = true;
-		    }
-        }
-    }
+
     public void SwitchProperty(int option)
     {
         if (isInitialized)
@@ -53,14 +37,15 @@ public class RoomPropertiesPanelScript : MonoBehaviour {
             Level.Rooms[currentRoom].FloorMaterial.color = Materials[option % noColors].color;
         }
     }
+
     public void SwitchToNextRoom()
     {
         if (isInitialized)
         {
             CurrentRoom = (currentRoom + 1) % noRooms;
-            UpdatePanel();
         }
     }
+
     public void SwitchToPrevRoom()
     {
         if (isInitialized)
@@ -69,12 +54,6 @@ public class RoomPropertiesPanelScript : MonoBehaviour {
                 CurrentRoom = noRooms - 1;
             else
                 CurrentRoom = currentRoom - 1;
-            UpdatePanel();
         }
-    }
-    private int FindMaterialIndex(Material mat)
-    {
-        return Array.FindIndex(Materials, material => material.color == mat.color);
-    }
-	
+    }	
 }
