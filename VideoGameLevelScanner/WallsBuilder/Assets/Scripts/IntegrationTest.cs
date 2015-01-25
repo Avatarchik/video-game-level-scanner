@@ -1,24 +1,23 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Emgu.CV;
-using Emgu.CV.Util;
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
-using System.Runtime.InteropServices;
 using System;
-using System.Drawing;
 using System.Timers;
 using ImageRecognitionLibrary;
 
 public class IntegrationTest : MonoBehaviour {
 
-    //public static bool CameraOn = false;
     public FilteringSliders FilteringSliders;
     public UnityEngine.UI.Image CameraImageUI;
     public UnityEngine.UI.Image LookupUI;
     public LevelBuilder LevelCreator;
+    public GameObject ScanningUI;
+    public GameObject LevelViewerUI;
+    public GameObject EmptyBoardWarning;
+    public GameObject NoCameraWarning;
 
-    private bool newFrame = true;
+    private bool newFrame = false;
     private bool processingFrame = false;
     private Capture capture;
     private Image<Bgr,byte> frame;
@@ -27,25 +26,35 @@ public class IntegrationTest : MonoBehaviour {
     private Timer cameraTimer;
     private FilteringParameters filteringParameters;
     private EditedRangeIndex editedRangeIndex;
-    public Range<Hsv> EditedRange;
+    public Range<Hsv> EditedRange = new Range<Hsv>();
 	private Texture2D cameraTex;
     private Texture2D lookupTex;
 
     private void Awake()
     {
-		capture = new Capture ();
-		//CameraOn = true;
         filteringParameters = new FilteringParameters(new UnityAppSettingsManager());
-        cameraTimer = new Timer(40);
-        cameraTimer.Elapsed += new ElapsedEventHandler(OnCameraFrame);
-        capture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FPS, 25);
+        if (CamerasDetected())
+        {
+            capture = new Capture();
+            newFrame = true;
+            cameraTimer = new Timer(40);
+            cameraTimer.Elapsed += new ElapsedEventHandler(OnCameraFrame);
+            capture.SetCaptureProperty(CAP_PROP.CV_CAP_PROP_FPS, 25);
+            ChangeEditedRange(0);
+        }
+        else
+        {
+            NoCameraWarning.SetActive(true);
+        }
 	}
 
 	private void Start()
 	{
-        ChangeEditedRange(0);
-        cameraTimer.Enabled = true;
-        cameraTimer.Start();
+        if (cameraTimer != null)
+        {
+            cameraTimer.Enabled = true;
+            cameraTimer.Start();
+        }
     }
 
     private void Update()
@@ -56,7 +65,7 @@ public class IntegrationTest : MonoBehaviour {
             newFrame = false;
         }    
     }
-
+    
     private void OnCameraFrame(object source, ElapsedEventArgs e)
     {
         newFrame = true;
@@ -99,7 +108,7 @@ public class IntegrationTest : MonoBehaviour {
             processingFrame = false;
 		}
     }
-
+    
     public float EditedHueMax 
     { 
         get { return (float)this.EditedRange.Max.Hue; } 
@@ -135,7 +144,15 @@ public class IntegrationTest : MonoBehaviour {
     {
         cameraTimer.Stop();
         capture.Stop();
-        LevelCreator.BuildLevel(board);
+        if (board != null)
+        {
+            LevelCreator.BuildLevel(board);
+            ScanningUI.SetActive(false);
+            LevelViewerUI.SetActive(true);
+        }
+        else
+            EmptyBoardWarning.SetActive(true);
+
     }
     public void SaveParameters()
     {
@@ -153,6 +170,11 @@ public class IntegrationTest : MonoBehaviour {
             cameraTimer.Stop();
         else
             cameraTimer.Start();
+    }
+
+    private bool CamerasDetected()
+    {
+        return (WebCamTexture.devices.Length > 0);
     }
 
     public enum EditedRangeIndex {Blue=0, Red=1, Red2=2, Green=3, Yellow=4}
@@ -184,8 +206,10 @@ public class IntegrationTest : MonoBehaviour {
     }
     private void OnDestroy()
     {
-        cameraTimer.Stop();
-        capture.Stop();
+        if (cameraTimer != null)
+            cameraTimer.Stop();
+        if (capture != null)
+            capture.Stop();
     }
 }
 

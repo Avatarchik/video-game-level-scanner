@@ -47,9 +47,7 @@ public class LevelSaving : MonoBehaviour {
         {
             NotSavedWarningPanel.SetActive(true);
         }
-
     }
-
 
     private void AppendName(StringBuilder sb)
     {
@@ -162,6 +160,7 @@ public class LevelSaving : MonoBehaviour {
         return properFileName;
 
     }
+
     private void Awake()
     {
         CreateScannerDirectory();

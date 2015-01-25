@@ -9,6 +9,7 @@ using System.Text;
 public class LevelBuilder : MonoBehaviour
 {
     public int[,] matrix;
+    public int[,] originalMatrix;
     public int unit = 8;
     public RoomPropertiesPanelScript RoomPropertiesPanel;
     static Quaternion constQuaternion;
@@ -23,25 +24,26 @@ public class LevelBuilder : MonoBehaviour
 
     void Start()
     {
-        matrix = new int[,] {
-            { 0, 0, 0, 0, 0, 0, 0 }, 
-            { 0, 9, 5, 5, 8, 8, 0 }, 
-            { 0, 9, 1, 1, 1, 1, 0 }, 
-            { 0, 9, 2, 2, 2, 1, 0 }, 
-            { 0, 9, 3, 3, 3, 4, 0 }, 
-            { 0, 9, 7, 7, 7, 6, 0 }, 
-            { 0, 9, 12, 11, 10, 10, 0 }, 
-            { 0, 9, 13, 13, 10, 10, 0 }, 
-            { 0, 9, 9, 9, 9, 9, 0 }, 
-            { 0, 0, 0, 0, 0, 0, 0 } 
-        };
-        BuildLevel(new Board(10, 10));
+        //matrix = new int[,] {
+        //    { 0, 0, 0, 0, 0, 0, 0 }, 
+        //    { 0, 9, 5, 5, 8, 8, 0 }, 
+        //    { 0, 9, 1, 1, 1, 1, 0 }, 
+        //    { 0, 9, 2, 2, 2, 1, 0 }, 
+        //    { 0, 9, 3, 3, 3, 4, 0 }, 
+        //    { 0, 9, 7, 7, 7, 6, 0 }, 
+        //    { 0, 9, 12, 11, 10, 10, 0 }, 
+        //    { 0, 9, 13, 13, 10, 10, 0 }, 
+        //    { 0, 9, 9, 9, 9, 9, 0 }, 
+        //    { 0, 0, 0, 0, 0, 0, 0 } 
+        //};
+        //BuildLevel(new Board(10, 10));
     }
     
     public void BuildLevel(Board board)
     {
-        //matrix = PrepareMatrix(board.Grid);
-        int n=13;
+        originalMatrix = board.Grid;
+        matrix = PrepareMatrix(originalMatrix);
+        int n = board.NoRooms;
         floors = new Floor[matrix.GetLength(0)-2,matrix.GetLength(1)-2];
         walls = new Wall[matrix.GetLength(0)-1, matrix.GetLength(1)-1];
         Rooms = new Room[n];

@@ -11,7 +11,9 @@ namespace ImageRecognitionLibrary
         public int Height { get { return height; } }
         private int width;
         public int Width { get { return width; } }
+        public int NoRooms = 0;
         private int[] grid;
+
 
         #region Constructors and destructor
         public Board(Size size)
@@ -129,6 +131,7 @@ namespace ImageRecognitionLibrary
                 for (int y = 0; y < width; ++y)
                     if (this[x, y] < 0)
                         this[x, y] = 0;
+            this.NoRooms = roomCounter;
         }
         protected bool IsInBoundaries(Point point)
         {
