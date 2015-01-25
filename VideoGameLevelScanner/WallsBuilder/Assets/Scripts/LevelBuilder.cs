@@ -17,6 +17,7 @@ public class LevelBuilder : MonoBehaviour
     public Floor[,] floors;
     public Wall[,] walls;
     public Room[] Rooms;
+    public List<Passage> Doors;
     public Material DefaultFloorMaterial;
     static private System.Random rnd = new System.Random();
 
@@ -81,8 +82,9 @@ public class LevelBuilder : MonoBehaviour
     }
     private void SpawnDoors()
     {
-        var roomsWithDoors = graph.Kruskal();
-        foreach (var edge in roomsWithDoors)
+        this.Doors = new List<Passage>();
+        var roomsToConnect = graph.Kruskal();
+        foreach (var edge in roomsToConnect)
         {
             SpawnDoor(FindPlaceForDoor(Rooms[edge.U - 1], Rooms[edge.V - 1]));
         }
@@ -165,6 +167,7 @@ public class LevelBuilder : MonoBehaviour
         Wall a = walls[commonWalls[0].Key, commonWalls[0].Value];
         Wall b = walls[commonWalls[1].Key, commonWalls[1].Value];
         Wall.ChangeToDoor(a, b);
+        this.Doors.Add(new Passage(floorsCoordinates.Key, floorsCoordinates.Value));
     }
 
     void AddEdgesToGraph(int[] rooms, int i)

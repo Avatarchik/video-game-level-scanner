@@ -65,16 +65,16 @@ public class LevelSaving : MonoBehaviour {
     private void AppendDoors(StringBuilder sb)
     {
         sb.AppendLine("Doors: [");
-        //foreach (var passage in level.Doors)
-        //{
-        //    sb.Append("{from: ");
-        //    AppendPoint(passage.From);
-        //    sb.Append(", to: ");
-        //    AppendPoint(passage.To);
-        //    sb.Append("}");
-        //    if (!passage.Equals(level.Doors.Last()))
-        //        sb.AppendLine(",");
-        //}
+        foreach (var passage in Level.Doors)
+        {
+            sb.Append("{from: ");
+            AppendPoint(passage.From);
+            sb.Append(", to: ");
+            AppendPoint(passage.To);
+            sb.Append("}");
+            if (!passage.Equals(Level.Doors.Last()))
+                sb.AppendLine(",");
+        }
         sb.AppendLine();
         sb.AppendLine("]");
     }
