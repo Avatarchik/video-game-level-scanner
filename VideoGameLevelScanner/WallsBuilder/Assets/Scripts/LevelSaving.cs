@@ -50,26 +50,31 @@ public class LevelSaving : MonoBehaviour {
 
     }
 
-    private void AppendDate(StringBuilder sb)
-    {
-        sb.Append("CreationDate: ");
-        sb.AppendLine(DateTime.Now.ToString("o"));
-    }
 
     private void AppendName(StringBuilder sb)
     {
-        sb.Append("LevelName: ");
-        sb.AppendLine(LevelNameInput.text);
+        sb.Append("\"LevelName\": ");
+        sb.Append("\"");
+        sb.Append(LevelNameInput.text);
+        sb.AppendLine("\",");
+    }
+
+    private void AppendDate(StringBuilder sb)
+    {
+        sb.Append("\"CreationDate\": ");
+        sb.Append("\"");
+        sb.Append(DateTime.Now.ToString("o"));
+        sb.AppendLine("\",");
     }
 
     private void AppendDoors(StringBuilder sb)
     {
-        sb.AppendLine("Doors: [");
+        sb.AppendLine("\"Doors\": [");
         foreach (var passage in Level.Doors)
         {
-            sb.Append("{from: ");
+            sb.Append("{\"from\": ");
             AppendPoint(passage.From);
-            sb.Append(", to: ");
+            sb.Append(", \"to\": ");
             AppendPoint(passage.To);
             sb.Append("}");
             if (!passage.Equals(Level.Doors.Last()))
@@ -81,12 +86,12 @@ public class LevelSaving : MonoBehaviour {
 
     private void AppendRooms(StringBuilder sb)
     {
-        sb.AppendLine("Rooms: [");
+        sb.AppendLine("\"Rooms\": [");
         foreach (var room in Level.Rooms)
         {
-            sb.Append("{N:");
+            sb.Append("{\"N\":");
             sb.Append(room.N);
-            sb.Append(", FloorColor: [");
+            sb.Append(", \"FloorColor\": [");
             sb.Append(room.FloorMaterial.color.a);
             sb.Append(",");
             sb.Append(room.FloorMaterial.color.r);
@@ -104,21 +109,21 @@ public class LevelSaving : MonoBehaviour {
 
     private void AppendWidth(StringBuilder sb)
     {
-        sb.Append("Width: ");
+        sb.Append("\"Width\": ");
         sb.Append(Level.matrix.GetLength(1));
         sb.AppendLine(",");
     }
 
     private void AppendHeight(StringBuilder sb)
     {
-        sb.Append("Height: ");
+        sb.Append("\"Height\": ");
         sb.Append(Level.matrix.GetLength(0));
         sb.AppendLine(",");
     }
 
     private void AppendMatrix(StringBuilder sb)
     {
-        sb.Append("Matrix: [");
+        sb.Append("\"Matrix\": [");
         sb.Append(string.Join(",", Array.ConvertAll(Level.matrix.Cast<int>().ToArray(),integer => integer.ToString())));
         sb.AppendLine("],");
     }
