@@ -12,6 +12,7 @@ public class LevelBuilder : MonoBehaviour
     public int unit = 8;
     public RoomPropertiesPanelScript RoomPropertiesPanel;
     static Quaternion constQuaternion;
+    public bool isSaved;
     private Graph graph = new Graph();
     public Floor[,] floors;
     public Wall[,] walls;
@@ -57,6 +58,7 @@ public class LevelBuilder : MonoBehaviour
         {
             room.SetRoomMaterial();
         }
+        isSaved = false;
     }
     public void RespawnDoors()
     {
@@ -75,6 +77,7 @@ public class LevelBuilder : MonoBehaviour
             }
         }
         SpawnDoors();
+        this.isSaved = false;
     }
     private void SpawnDoors()
     {

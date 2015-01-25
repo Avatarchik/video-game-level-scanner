@@ -36,6 +36,7 @@ public class RoomPropertiesPanelScript : MonoBehaviour {
         {
             Level.Rooms[currentRoom].FloorMaterial.color = Materials[option % noColors].color;
         }
+        Level.isSaved = false;
     }
 
     public void SwitchToNextRoom()
