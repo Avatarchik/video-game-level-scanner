@@ -108,21 +108,21 @@ public class LevelSaving : MonoBehaviour {
     private void AppendWidth(StringBuilder sb)
     {
         sb.Append("\"Width\": ");
-        sb.Append(Level.matrix.GetLength(1));
+        sb.Append(Level.originalMatrix.GetLength(1));
         sb.AppendLine(",");
     }
 
     private void AppendHeight(StringBuilder sb)
     {
         sb.Append("\"Height\": ");
-        sb.Append(Level.matrix.GetLength(0));
+        sb.Append(Level.originalMatrix.GetLength(0));
         sb.AppendLine(",");
     }
 
     private void AppendMatrix(StringBuilder sb)
     {
         sb.Append("\"Matrix\": [");
-        sb.Append(string.Join(",", Array.ConvertAll(Level.matrix.Cast<int>().ToArray(),integer => integer.ToString())));
+        sb.Append(string.Join(",", Array.ConvertAll(Level.originalMatrix.Cast<int>().ToArray(),integer => integer.ToString())));
         sb.AppendLine("],");
     }
 

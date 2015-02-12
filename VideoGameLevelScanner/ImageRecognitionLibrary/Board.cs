@@ -131,7 +131,7 @@ namespace ImageRecognitionLibrary
                 for (int y = 0; y < width; ++y)
                     if (this[x, y] < 0)
                         this[x, y] = 0;
-            this.NoRooms = roomCounter;
+            this.NoRooms = roomCounter-1;
         }
         protected bool IsInBoundaries(Point point)
         {

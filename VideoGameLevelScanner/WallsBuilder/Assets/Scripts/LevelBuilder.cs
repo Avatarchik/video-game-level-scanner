@@ -41,12 +41,18 @@ public class LevelBuilder : MonoBehaviour
     
     public void BuildLevel(Board board)
     {
+        var children = new List<GameObject>();
+        foreach (Transform child in transform) 
+            children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+
         originalMatrix = board.Grid;
         matrix = PrepareMatrix(originalMatrix);
         int n = board.NoRooms;
         floors = new Floor[matrix.GetLength(0)-2,matrix.GetLength(1)-2];
         walls = new Wall[matrix.GetLength(0)-1, matrix.GetLength(1)-1];
         Rooms = new Room[n];
+        graph = new Graph();
         for (int i = 0; i < n; ++i)
         {
             Rooms[i] = new Room(i+1, DefaultFloorMaterial);
