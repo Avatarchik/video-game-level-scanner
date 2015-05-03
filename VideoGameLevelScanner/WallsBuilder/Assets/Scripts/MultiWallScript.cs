@@ -63,11 +63,11 @@ public class MultiWallScript : MonoBehaviour {
             default:
                 throw new ArgumentException();
         }
-        sideObject.FindChild("LeftSide").GetComponent<MeshFilter>().mesh = leftMesh;
-        sideObject.FindChild("LeftSide").GetComponent<MeshCollider>().mesh = leftMesh;
-        sideObject.FindChild("RightSide").GetComponent<MeshFilter>().mesh = rightMesh;
-        sideObject.FindChild("RightSide").GetComponent<MeshCollider>().mesh = rightMesh;
-        sideObject.FindChild("Middle").GetComponent<MeshFilter>().mesh = midMesh;
-        sideObject.FindChild("Middle").GetComponent<MeshCollider>().mesh = midMesh;
+        sideObject.FindChild("LeftSide").GetComponent<MeshFilter>().sharedMesh= leftMesh;
+        sideObject.FindChild("LeftSide").GetComponent<MeshCollider>().sharedMesh = leftMesh;
+        sideObject.FindChild("RightSide").GetComponent<MeshFilter>().sharedMesh = rightMesh;
+        sideObject.FindChild("RightSide").GetComponent<MeshCollider>().sharedMesh = rightMesh;
+        sideObject.FindChild("Middle").GetComponent<MeshFilter>().sharedMesh = midMesh;
+        sideObject.FindChild("Middle").GetComponent<MeshCollider>().sharedMesh = midMesh;
     }
 }

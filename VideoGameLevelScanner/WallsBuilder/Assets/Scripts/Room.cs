@@ -32,7 +32,7 @@ public class Room{
     {
         foreach (var floor in floors)
         {
-            floor.gameObject.renderer.material = FloorMaterial;
+            floor.gameObject.GetComponent<Renderer>().material = FloorMaterial;
         } 
     }
     public void ChangeFloorColor(Color color)

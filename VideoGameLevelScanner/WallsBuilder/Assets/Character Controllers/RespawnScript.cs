@@ -15,7 +15,7 @@ public class RespawnScript : MonoBehaviour {
         player.transform.position = spawnPoint.position + shift;
 
         player.SetActive(true);
-        mainCamera.camera.enabled = false;
+        mainCamera.GetComponent<Camera>().enabled = false;
         playerCamera.enabled = true;
     }
 }

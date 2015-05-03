@@ -12,12 +12,12 @@ public class Zooming : MonoBehaviour {
     void Start()
     {
         //for percpective camera pick camera.fieldOfView
-        distance = camera.orthographicSize;
+        distance = GetComponent<Camera>().orthographicSize;
     }
     void Update()
     {
         distance -= Input.GetAxis("Mouse ScrollWheel") * sensitivityDistance;
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
-        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, distance, Time.deltaTime * damping);
+        GetComponent<Camera>().orthographicSize = Mathf.Lerp(GetComponent<Camera>().orthographicSize, distance, Time.deltaTime * damping);
     }
 }
